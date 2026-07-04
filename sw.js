@@ -1,4 +1,4 @@
-const CACHE_NAME = "album-copa-2026-tablet-v6";
+const CACHE_NAME = "album-copa-2026-tablet-v7";
 const CORE_ASSETS = [
   "./",
   "./index.html",
@@ -26,6 +26,16 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request).then(response => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+        return response;
+      }).catch(() => caches.match("./album_copa_2026_premium_imagens_externas.html"))
+    );
+    return;
+  }
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
