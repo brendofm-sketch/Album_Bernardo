@@ -22,8 +22,10 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
 @media(pointer:coarse){button,.filebtn,.nav button{min-height:48px}.country-item{min-height:68px}.sticker{touch-action:manipulation}.sticker-tools{display:flex}.sticker-tools button{min-height:38px}}
 .app{display:grid;grid-template-columns:300px 1fr 330px;gap:18px;padding:18px;max-width:1800px;margin:0 auto}
 .sidebar,.rightbar,.main-card{background:#fff;border-radius:20px;box-shadow:var(--shadow);border:1px solid #eef0f4}.sidebar,.rightbar{padding:14px;height:calc(100vh - 108px);position:sticky;top:92px;overflow:auto}
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 10px}.sidebar-head h3{margin:0}.view-toggle{padding:9px 10px;border-radius:12px;background:#eef3fb;color:#0f172a;box-shadow:none;font-size:13px;white-space:nowrap}
 .search{width:100%;padding:13px;border-radius:13px;border:1px solid #d9dee8;font-size:15px;margin-bottom:12px}.country-list{display:flex;flex-direction:column;gap:9px}
 .country-item{display:grid;grid-template-columns:58px 1fr;gap:12px;align-items:center;padding:10px;border-radius:14px;cursor:pointer;border:1px solid transparent}.country-item:hover,.country-item.active{background:#eef6df;border-color:#d5e7bd}
+.country-list.flags-only{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:10px;align-items:start}.country-list.flags-only .country-item{display:flex;min-height:62px;padding:8px;justify-content:center;align-items:center;border-color:#e5e7eb;background:#fff}.country-list.flags-only .country-item.active{background:#eef6df;border-color:#9ccc65;box-shadow:inset 0 0 0 2px #9ccc65}.country-list.flags-only .country-info{display:none}.country-list.flags-only .flagbox{width:58px;height:44px}
 .flagbox{height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;background:#f8fafc;box-shadow:inset 0 0 0 1px #ddd;overflow:hidden}.flag-img{display:inline-flex;align-items:center;justify-content:center;overflow:hidden;background:#f8fafc;color:#0f172a;font-weight:900}.flag-img img{width:100%;height:100%;object-fit:cover;display:block}.flag-small{width:58px;height:44px;border-radius:8px}.flag-big{width:90px;height:64px;border-radius:10px;box-shadow:0 8px 18px #0002}.flag-badge{width:74px;height:52px;border-radius:9px;box-shadow:0 7px 14px #0002}.country-item b{font-size:14px}.country-item small{color:#475569}.mini{height:8px;background:#e5e7eb;border-radius:99px;overflow:hidden;margin-top:6px}.mini span{display:block;height:100%;background:#f7c600}
 .main-card{padding:18px;background:linear-gradient(180deg,#fff,#fff8ed);min-height:820px}.hero{display:grid;grid-template-columns:1fr 520px;gap:16px;align-items:center;margin-bottom:18px}
 .team-title{display:flex;align-items:center;gap:18px}.bigflag{width:90px;height:64px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#f8fafc;font-size:20px;box-shadow:0 8px 18px #0002;overflow:hidden}.team-title h1{margin:0;font-size:46px;letter-spacing:1px;color:#0a2b4e}.team-title p{margin:6px 0;color:#1f2937}
@@ -43,7 +45,7 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
 .settings-grid{display:grid;grid-template-columns:1fr;gap:12px}.settings-grid label{font-size:13px;font-weight:900;color:#334155}.settings-grid input{width:100%;margin-top:5px;border:1px solid #d7dde8;border-radius:12px;padding:12px;font-size:15px}.avatar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;margin-top:10px}.avatar-choice{border:2px solid #d7dde8;background:#fff;border-radius:14px;padding:8px;cursor:pointer;display:flex;align-items:center;justify-content:center}.avatar-choice.active{border-color:#075bd8;background:#eef6ff}.avatar{width:56px;height:56px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--a1),var(--a2));color:white;font-weight:900;font-size:19px;box-shadow:inset 0 0 0 3px #ffffff66,0 6px 16px #0002;overflow:hidden}.avatar img{width:100%;height:100%;object-fit:cover;display:block}.avatar.small{width:38px;height:38px;font-size:13px}.avatar.top{width:28px;height:28px;font-size:10px;margin-right:6px;vertical-align:middle}.avatar::after{content:attr(data-num)}.avatar.has-img::after{content:""}.friend-item.with-avatar{grid-template-columns:auto 1fr auto}
 @media(max-width:1200px){.app{grid-template-columns:260px 1fr}.rightbar{display:none}.hero{grid-template-columns:1fr}.team-title h1{font-size:38px}.grid{gap:10px}.sticker{height:150px}.art{height:114px}.bottom-actions{grid-template-columns:1fr 1fr}}
 @media(min-width:761px) and (max-width:1100px){
-  body{background:#eef2f7}.topbar{height:auto;min-height:74px;align-items:flex-start;flex-wrap:wrap;padding:10px 14px}.logo{min-width:220px}.logo .big{font-size:24px}.nav{order:3;width:100%;overflow-x:auto;justify-content:flex-start;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;padding:12px 14px}.app{grid-template-columns:1fr;gap:12px;padding:12px}.sidebar{position:relative;top:auto;height:auto;max-height:none;padding:12px}.sidebar h3{margin:4px 0 10px}.country-list{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));gap:8px;max-height:250px;overflow:auto}.main-card{min-height:auto;padding:14px}.hero{grid-template-columns:1fr;gap:12px}.team-title h1{font-size:40px}.album-page{min-height:auto;padding:14px}.grid{grid-template-columns:repeat(5,minmax(112px,1fr));gap:10px}.sticker{height:172px}.art{height:132px}.bottom-actions{grid-template-columns:repeat(3,1fr)}.action-card{padding:9px}.control-sheet{max-width:98vw}.preview-sheet{grid-template-columns:minmax(280px,46vw) 1fr}
+  body{background:#eef2f7}.topbar{height:auto;min-height:74px;align-items:flex-start;flex-wrap:wrap;padding:10px 14px}.logo{min-width:220px}.logo .big{font-size:24px}.nav{order:3;width:100%;overflow-x:auto;justify-content:flex-start;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;padding:12px 14px}.app{grid-template-columns:1fr;gap:12px;padding:12px}.sidebar{position:relative;top:auto;height:auto;max-height:none;padding:12px}.country-list{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));gap:8px;max-height:250px;overflow:auto}.country-list.flags-only{grid-template-columns:repeat(auto-fill,minmax(64px,1fr))}.main-card{min-height:auto;padding:14px}.hero{grid-template-columns:1fr;gap:12px}.team-title h1{font-size:40px}.album-page{min-height:auto;padding:14px}.grid{grid-template-columns:repeat(5,minmax(112px,1fr));gap:10px}.sticker{height:172px}.art{height:132px}.bottom-actions{grid-template-columns:repeat(3,1fr)}.action-card{padding:9px}.control-sheet{max-width:98vw}.preview-sheet{grid-template-columns:minmax(280px,46vw) 1fr}
 }
 @media(max-width:760px){.topbar{height:auto;flex-wrap:wrap}.logo{min-width:0}.nav{order:3;overflow:auto;width:100%}.app{grid-template-columns:1fr;padding:10px}.sidebar{position:static;height:auto}.main-card{padding:12px}.grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:repeat(2,1fr)}.bottom-actions{grid-template-columns:1fr}.team-title h1{font-size:30px}.preview-sheet{grid-template-columns:1fr}.preview-info h2{font-size:30px}.preview-frame{min-height:auto}.auth-grid,.trade-columns,.friends-grid,.settings-grid{grid-template-columns:1fr}.friend-add,.message-form{grid-template-columns:1fr}}
 </style>
@@ -66,7 +68,10 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
 
 <div class="app">
   <aside class="sidebar">
-    <h3>PAÍSES E ESPECIAIS</h3>
+    <div class="sidebar-head">
+      <h3>PAÍSES E ESPECIAIS</h3>
+      <button id="countryViewBtn" class="view-toggle" onclick="toggleCountryView()">🏳️ Bandeiras</button>
+    </div>
     <input id="search" class="search" placeholder="Buscar país ou especial..." oninput="renderCountries()">
     <div id="countryList" class="country-list"></div>
     <button style="width:100%;margin-top:14px" onclick="showAllCountries()">Ver todos os países</button>
@@ -264,6 +269,7 @@ let db = JSON.parse(localStorage.getItem("albumCopaPremiumExternal") || '{"stick
 let current = "BRA";
 let previewSticker = null;
 let controlMode = "all";
+let countryViewMode = localStorage.getItem("albumCountryViewMode") || "list";
 let currentUser = null;
 let cloudReady = false;
 let cloudBusy = false;
@@ -373,13 +379,22 @@ function stickerHTML(t,s){
 function renderCountries(){
   const q=document.getElementById("search").value.toLowerCase();
   const el=document.getElementById("countryList"); el.innerHTML="";
+  el.classList.toggle("flags-only", countryViewMode==="flags");
+  const viewBtn=document.getElementById("countryViewBtn");
+  if(viewBtn) viewBtn.textContent = countryViewMode==="flags" ? "📋 Lista" : "🏳️ Bandeiras";
   GROUPS.filter(t=>(t.name+" "+t.code).toLowerCase().includes(q)).forEach(t=>{
     const have=t.slots.filter(s=>owned(t.code,s.n)).length;
     const d=document.createElement("div"); d.className="country-item "+(t.code===current?"active":"");
+    d.title=`${t.name} - ${have} / ${t.slots.length}`;
     d.onclick=()=>{current=t.code;renderAlbum();renderCountries()};
-    d.innerHTML=`<div class="flagbox">${flagHTML(t)}</div><div><b>${t.name.toUpperCase()}</b><br><small>${have} / ${t.slots.length}</small><div class="mini"><span style="width:${have/t.slots.length*100}%"></span></div></div>`;
+    d.innerHTML=`<div class="flagbox">${flagHTML(t)}</div><div class="country-info"><b>${t.name.toUpperCase()}</b><br><small>${have} / ${t.slots.length}</small><div class="mini"><span style="width:${have/t.slots.length*100}%"></span></div></div>`;
     el.appendChild(d);
   });
+}
+function toggleCountryView(){
+  countryViewMode = countryViewMode==="flags" ? "list" : "flags";
+  localStorage.setItem("albumCountryViewMode", countryViewMode);
+  renderCountries();
 }
 function renderAlbum(){
   const t=team(current);
