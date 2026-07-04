@@ -13,6 +13,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - `manifest.webmanifest`, `sw.js`, `icon-192.png`, `icon-512.png`: PWA/cache.
 - `start_tablet_server.py`: servidor local opcional.
 - `.nojekyll`: necessario para GitHub Pages servir arquivos estaticos sem Jekyll.
+- `supabase/schema.sql`: estrutura inicial do banco para login, sincronizacao e comparacao de trocas.
 
 ## Regras importantes
 
@@ -21,7 +22,27 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Antes de mexer em HTML importante, criar backup local `backup_album_copa_2026_premium_imagens_externas_YYYYMMDD_HHMMSS.html`.
 - Alteracoes de runtime devem ficar no HTML, imagens, bandeiras, manifest ou service worker.
 - Ao mudar comportamento visual/cache, atualizar `CACHE_NAME` em `sw.js` quando fizer sentido.
-- O progresso do album fica no `localStorage` do navegador. Para levar entre aparelhos, usar backup/importacao JSON do app.
+- O progresso do album fica primeiro no `localStorage` do navegador. A versao `supabase-dev` sincroniza com Supabase depois de login, mesclando as maiores quantidades por figurinha.
+- Nunca colocar `service_role` ou secret key no HTML. Somente publishable key e RLS.
+
+## Supabase
+
+- Branch de desenvolvimento: `supabase-dev`.
+- Branch de seguranca local antes do Supabase: `stable-localstorage-before-supabase`.
+- A branch publica do Pages segue sendo `main` ate a nuvem ser testada.
+- URL do projeto Supabase: `https://gjtrxzczvbtvftjqdmah.supabase.co`.
+- Chave no HTML: publishable key `sb_publishable_...`.
+- Para preparar o banco, rodar `supabase/schema.sql` no SQL Editor.
+- Tabelas previstas: `profiles`, `albums`, `user_stickers`, `trade_offers`.
+- O app compara trocas lendo `user_stickers` de usuarios autenticados: quem tem repetida de uma faltante sua e quem precisa de uma repetida sua.
+- Recuperacao de senha fica no modal `Conta e sincronizacao`, usando `resetPasswordForEmail` e `updateUser`.
+- Ao publicar, cadastrar nas Redirect URLs do Supabase: `https://brendofm-sketch.github.io/Album_Bernardo/` e o HTML principal.
+- Aba `Amigos`: usa `profiles.email`, `profiles.last_seen`, `friendships` e `messages`; perfil do amigo cruza repetidas/faltantes entre os dois usuarios.
+- Perfil/configuracoes: usa `profiles.username`, `profiles.username_search` e `profiles.avatar_id`; `username` preserva maiusculas/minusculas como digitado, `username_search` faz busca/unicidade sem diferenciar caixa. O nome exibido deve ser igual ao username.
+- Topo simplificado: manter `Album`, `Trocas`, `Amigos`, `Estatisticas`, `Controle`; evitar duplicar `Paises`/`Repetidas`.
+- Importacao/exportacao preferida no tablet: codigo de transferencia copiavel no perfil. JSON continua como backup tecnico em Trocas.
+- Painel lateral de paises: manter alternador entre lista detalhada e grade compacta so com bandeiras; o modo fica salvo em `albumCountryViewMode`.
+- Repetidas: o comando `clearDuplicatesOnly()` deve reduzir quantidades maiores que 1 para 1, preservando as figurinhas marcadas como tenho.
 
 ## GitHub Pages
 
