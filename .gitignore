@@ -8,6 +8,7 @@ pdf_recortes/
 auditoria_figurinhas/
 referencias/
 __pycache__/
+node_modules/
 Obsoleto/
 
 # Relatorios e arquivos auxiliares locais
