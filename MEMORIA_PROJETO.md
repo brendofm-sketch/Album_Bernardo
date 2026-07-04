@@ -44,6 +44,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Painel lateral de paises: manter alternador entre lista detalhada e grade compacta so com bandeiras; o modo fica salvo em `albumCountryViewMode`.
 - Repetidas: o comando `clearDuplicatesOnly()` deve reduzir quantidades maiores que 1 para 1, preservando as figurinhas marcadas como tenho.
 - Login: a tela de conta deve usar apenas `usuario ou e-mail` + senha para entrar; para criar conta, usar usuario, e-mail e senha. O botao de sincronizar fica somente nas configuracoes do usuario.
+- Textos de login: manter a tela curta e sem explicacoes tecnicas sobre Supabase/sincronizacao; traduzir erros tecnicos para mensagens simples.
 
 ## GitHub Pages
 

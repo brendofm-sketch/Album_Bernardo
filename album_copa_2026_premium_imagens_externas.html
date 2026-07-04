@@ -139,7 +139,6 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
   <div class="sheet-head"><h2>☁️ Conta e sincronização</h2><button class="close" onclick="closeAuth()">×</button></div>
   <div class="cloud-card">
     <div class="cloud-status"><span id="authCloudDot" class="sync-dot"></span><span id="authStatus">Carregando...</span></div>
-    <p class="muted">O álbum continua salvo neste tablet. Ao entrar, o app envia uma cópia para o Supabase e mistura os dados usando a maior quantidade de cada figurinha.</p>
   </div>
   <div class="auth-grid">
     <label>Usuário ou e-mail<input id="authLogin" autocomplete="username" placeholder="Ex: BeGames ou email@exemplo.com"></label>
@@ -692,16 +691,20 @@ function setCloudStatus(text,online=false){
 }
 function cloudErrorMessage(err){
   const msg=String(err?.message||err||"");
+  const lower=msg.toLowerCase();
+  if(lower.includes("email rate limit") || lower.includes("rate limit exceeded")){
+    return "Muitas tentativas seguidas. Aguarde alguns minutos e tente novamente.";
+  }
   if(msg.includes("schema cache") || msg.includes("Could not find the table")){
-    return "Banco ainda não preparado. Rode o arquivo supabase/schema.sql no SQL Editor do Supabase.";
+    return "Serviço de contas ainda não está pronto.";
   }
   if(msg.includes("username") || msg.includes("avatar_id")){
-    return "O banco precisa da atualização de Perfil. Rode novamente o arquivo supabase/schema.sql no SQL Editor.";
+    return "Serviço de perfil ainda não está pronto.";
   }
   if(msg.includes("row-level security") || msg.includes("violates row-level security")){
     return "A conta ainda não tem uma sessão ativa para gravar no banco. Clique em Entrar novamente.";
   }
-  return msg || "Erro desconhecido no Supabase.";
+  return msg || "Erro ao acessar a conta.";
 }
 function updateAuthUI(){
   const btn=document.getElementById("cloudBtn");
@@ -712,7 +715,7 @@ function updateAuthUI(){
   document.getElementById("updatePasswordBtn")?.style && (document.getElementById("updatePasswordBtn").style.display=passwordRecoveryMode?"inline-flex":"none");
   if(passwordRecoveryMode) setCloudStatus("Digite uma nova senha e clique em Salvar nova senha.",true);
   else if(currentUser) setCloudStatus("Conectado: "+(currentUser.email||name),true);
-  else setCloudStatus(cloud ? "Entre na conta para sincronizar e trocar." : "Supabase não carregou. Verifique a internet.",false);
+  else setCloudStatus(cloud ? "Entre para continuar." : "Não foi possível carregar a conta. Verifique a internet.",false);
 }
 function openAuth(){updateAuthUI();document.getElementById("authModal").classList.add("open")}
 function closeAuth(){document.getElementById("authModal").classList.remove("open")}
@@ -739,7 +742,7 @@ async function ensureProfile(){
   await cloud.from("profiles").upsert({id:currentUser.id,display_name:displayName,email:(currentUser.email||"").toLowerCase(),last_seen:now,updated_at:now},{onConflict:"id"});
 }
 async function signUp(){
-  if(!cloud){toast("Supabase não carregou.");return;}
+  if(!cloud){toast("Não foi possível carregar a conta.");return;}
   const email=document.getElementById("authEmail").value.trim();
   const password=document.getElementById("authPassword").value;
   const username=normalizeUsername(document.getElementById("authLogin").value);
@@ -751,7 +754,7 @@ async function signUp(){
   profileSettings={username,displayName:username,avatarId:Number(profileSettings.avatarId)||1};
   saveLocalProfileSettings();
   const {data,error}=await cloud.auth.signUp({email,password,options:{data:{display_name:username,username}}});
-  if(error){toast(error.message);return;}
+  if(error){toast(cloudErrorMessage(error));return;}
   if(!data.session){
     currentUser=null;
     cloudReady=false;
@@ -767,14 +770,14 @@ async function signUp(){
   toast("Conta criada e sincronizada.");
 }
 async function signIn(){
-  if(!cloud){toast("Supabase não carregou.");return;}
+  if(!cloud){toast("Não foi possível carregar a conta.");return;}
   const identifier=document.getElementById("authLogin").value.trim() || document.getElementById("authEmail").value.trim();
   const password=document.getElementById("authPassword").value;
   if(!identifier || !password){toast("Informe usuário ou e-mail e senha.");return;}
   const email=await emailForLogin(identifier);
   if(!email) return;
   const {data,error}=await cloud.auth.signInWithPassword({email,password});
-  if(error){toast(error.message);return;}
+  if(error){toast(cloudErrorMessage(error));return;}
   currentUser=data.user;
   await loadProfileSettingsFromCloud();
   await ensureProfile();
@@ -786,23 +789,23 @@ function authRedirectUrl(){
   return location.href.split("#")[0].split("?")[0];
 }
 async function sendPasswordReset(){
-  if(!cloud){toast("Supabase não carregou.");return;}
+  if(!cloud){toast("Não foi possível carregar a conta.");return;}
   const login=document.getElementById("authLogin").value.trim();
   const email=(document.getElementById("authEmail").value.trim() || (login.includes("@") ? login : "")).trim();
   if(!email){toast("Informe o e-mail para recuperar a senha.");return;}
   const {error}=await cloud.auth.resetPasswordForEmail(email,{redirectTo:authRedirectUrl()});
-  if(error){toast(error.message);return;}
+  if(error){toast(cloudErrorMessage(error));return;}
   setCloudStatus("E-mail de recuperação enviado. Abra o link no tablet ou computador e defina a nova senha.",true);
   toast("E-mail de recuperação enviado.");
 }
 async function updatePassword(){
-  if(!cloud){toast("Supabase não carregou.");return;}
+  if(!cloud){toast("Não foi possível carregar a conta.");return;}
   const password=document.getElementById("newPassword").value;
   if(!password || password.length<6){toast("Informe uma nova senha com pelo menos 6 caracteres.");return;}
   const {data}=await cloud.auth.getSession();
   if(!data.session){toast("Abra este app pelo link recebido no e-mail para trocar a senha.");return;}
   const {error}=await cloud.auth.updateUser({password});
-  if(error){toast(error.message);return;}
+  if(error){toast(cloudErrorMessage(error));return;}
   passwordRecoveryMode=false;
   document.getElementById("newPassword").value="";
   updateAuthUI();
