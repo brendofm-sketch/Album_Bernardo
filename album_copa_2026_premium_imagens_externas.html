@@ -54,8 +54,6 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
   <div class="logo"><div class="cup">🏆</div><span><span class="small">ÁLBUM DIGITAL</span><span class="big">COPA 2026</span></span></div>
   <div class="nav" aria-label="Navegação principal">
     <button class="active" data-tab="album" onclick="setView('album')">📕 Álbum</button>
-    <button data-tab="countries" onclick="setView('countries')">🌎 Países</button>
-    <button data-tab="repeated" onclick="setView('repeated')">🔒 Repetidas</button>
     <button data-tab="trades" onclick="setView('trades')">🔁 Trocas</button>
     <button data-tab="friends" onclick="setView('friends')">👥 Amigos</button>
     <button data-tab="stats" onclick="setView('stats')">📊 Estatísticas</button>
@@ -184,6 +182,10 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
   <div id="avatarGrid" class="avatar-grid"></div>
   <div class="cloud-actions">
     <button class="green" onclick="saveSettings()">Salvar configurações</button>
+    <button class="auth-pill" onclick="syncNow()">Sincronizar</button>
+    <button onclick="exportTransferCode()">Exportar código</button>
+    <button onclick="importTransferCode()">Importar álbum</button>
+    <button class="red" onclick="signOut()">Sair</button>
     <button class="gray" onclick="closeSettings()">Fechar</button>
   </div>
 </div></div>
@@ -584,6 +586,32 @@ function resetAll(){if(confirm("Apagar todo o álbum?")){db={stickers:{},notes:"
 function showAllCountries(){document.getElementById("search").value="";renderCountries();}
 function openHelp(){document.getElementById("helpModal").classList.add("open")}
 function closeHelp(){document.getElementById("helpModal").classList.remove("open")}
+function encodeAlbumTransfer(data){
+  return btoa(unescape(encodeURIComponent(JSON.stringify({v:1,updatedAt:new Date().toISOString(),data}))));
+}
+function decodeAlbumTransfer(code){
+  return JSON.parse(decodeURIComponent(escape(atob(String(code||"").trim()))));
+}
+async function exportTransferCode(){
+  const code=encodeAlbumTransfer({stickers:db.stickers||{},notes:db.notes||""});
+  try{await navigator.clipboard?.writeText(code);toast("Código copiado.");}
+  catch{download("album_copa_2026_codigo.txt",code);toast("Código exportado em TXT.");}
+}
+function importTransferCode(){
+  const code=prompt("Cole o código de transferência do álbum:");
+  if(!code) return;
+  try{
+    const parsed=decodeAlbumTransfer(code);
+    const incoming=parsed.data||parsed;
+    db=mergeAlbumData(db,{stickers:incoming.stickers||{},notes:incoming.notes||""});
+    localStorage.setItem("albumCopaPremiumExternal",JSON.stringify(db));
+    save(); renderAlbum();
+    if(document.getElementById("controlModal").classList.contains("open")) renderControl();
+    toast("Álbum importado e mesclado.");
+  }catch{
+    alert("Código inválido.");
+  }
+}
 function codeFor(c,n){return c+String(n).padStart(2,"0")}
 function splitCode(code){
   const clean=String(code||"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
@@ -730,6 +758,7 @@ async function signOut(){
   updateAuthUI();
   renderCloudTrades();
   if(document.getElementById("friendsModal").classList.contains("open")) renderFriends();
+  if(document.getElementById("settingsModal").classList.contains("open")) setSettingsStatus("Você saiu da conta. O perfil local continua salvo.",false);
   toast("Saiu da conta. O álbum local continua salvo.");
 }
 function scheduleCloudSync(){
