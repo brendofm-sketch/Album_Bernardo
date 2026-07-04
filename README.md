@@ -84,7 +84,7 @@ A chave usada no HTML e a publishable key. Nao coloque `service_role` ou secret 
 
 O app continua local-first: salva no `localStorage`, funciona offline, e quando entra na conta sincroniza com o Supabase mesclando as quantidades maiores de cada figurinha.
 
-A aba `Amigos` usa as tabelas `friendships` e `messages`. Sempre que essa parte mudar, rode novamente `supabase/schema.sql` no SQL Editor para atualizar o banco sem apagar dados.
+A aba `Amigos` usa as tabelas `friendships` e `messages`, e a busca agora usa `profiles.username` em vez de e-mail. Sempre que essa parte mudar, rode novamente `supabase/schema.sql` no SQL Editor para atualizar o banco sem apagar dados.
 
 Para recuperacao de senha, cadastre a URL publicada do album em `Authentication` > `URL Configuration` > `Redirect URLs`:
 
