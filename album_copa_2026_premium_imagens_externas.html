@@ -114,6 +114,7 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
     <h3 class="panel-title" style="margin-top:20px">REPETIDAS <span id="dupTotal" style="float:right;background:#0f6fff;color:white;border-radius:99px;padding:4px 10px">0</span></h3>
     <div id="dupesGrid" class="dupes-grid"></div>
     <button style="width:100%;margin-top:12px" onclick="openTrades()">Ver todas repetidas</button>
+    <button class="red" style="width:100%;margin-top:10px" onclick="clearDuplicatesOnly()">Limpar somente repetidas</button>
   </aside>
 </div>
 
@@ -123,6 +124,7 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
     <button onclick="exportJSON()">💾 Exportar JSON</button>
     <label class="filebtn">📂 Importar JSON<input type="file" accept=".json" onchange="importJSON(event)"></label>
     <button class="auth-pill" onclick="openAuth()">☁️ Conta e sincronização</button>
+    <button class="red" onclick="clearDuplicatesOnly()">Limpar somente repetidas</button>
     <button class="red" onclick="resetAll()">Limpar tudo</button>
   </div>
   <div id="tradeList"></div>
@@ -222,6 +224,7 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
     <button onclick="exportControlList()">📄 Exportar controle</button>
     <button onclick="exportMissing()">🔎 Exportar faltantes</button>
     <button class="red" onclick="clearCurrentTeam()">🧹 Apagar país atual</button>
+    <button class="red" onclick="clearDuplicatesOnly()">🔁 Limpar repetidas</button>
     <button class="red" onclick="clearOwnedOnly()">🗑️ Apagar todas marcadas</button>
     <button onclick="window.print()">🖨️ Imprimir</button>
   </div>
@@ -494,6 +497,25 @@ function clearOwnedOnly(){
   renderAlbum();
   renderControl();
   toast("Marcações apagadas.");
+}
+function clearDuplicatesOnly(){
+  let removed=0;
+  GROUPS.forEach(t=>t.slots.forEach(s=>{
+    const q=get(t.code,s.n).qty;
+    if(q>1) removed+=q-1;
+  }));
+  if(!removed){toast("Nenhuma repetida para limpar."); return;}
+  if(!confirm(`Limpar ${removed} repetida(s) e manter 1 de cada figurinha?`)) return;
+  GROUPS.forEach(t=>t.slots.forEach(s=>{
+    const k=key(t.code,s.n);
+    const item=get(t.code,s.n);
+    if(item.qty>1) db.stickers[k]={...item,qty:1};
+  }));
+  save();
+  renderAlbum();
+  if(document.getElementById("controlModal").classList.contains("open")) renderControl();
+  if(document.getElementById("tradesModal").classList.contains("open")) openTrades();
+  toast("Repetidas limpas.");
 }
 function completeReward(){const ok=team(current).slots.every(s=>owned(current,s.n)); toast(ok?"Grupo completo!":"Ainda faltam figurinhas.");}
 function exportMissing(){

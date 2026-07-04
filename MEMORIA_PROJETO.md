@@ -42,6 +42,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Topo simplificado: manter `Album`, `Trocas`, `Amigos`, `Estatisticas`, `Controle`; evitar duplicar `Paises`/`Repetidas`.
 - Importacao/exportacao preferida no tablet: codigo de transferencia copiavel no perfil. JSON continua como backup tecnico em Trocas.
 - Painel lateral de paises: manter alternador entre lista detalhada e grade compacta so com bandeiras; o modo fica salvo em `albumCountryViewMode`.
+- Repetidas: o comando `clearDuplicatesOnly()` deve reduzir quantidades maiores que 1 para 1, preservando as figurinhas marcadas como tenho.
 
 ## GitHub Pages
 
