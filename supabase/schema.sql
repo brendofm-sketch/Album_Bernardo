@@ -7,6 +7,7 @@ create table if not exists public.profiles (
   display_name text not null,
   email text,
   username text,
+  username_search text,
   avatar_id integer not null default 1,
   last_seen timestamptz,
   created_at timestamptz not null default now(),
@@ -15,6 +16,7 @@ create table if not exists public.profiles (
 
 alter table public.profiles add column if not exists email text;
 alter table public.profiles add column if not exists username text;
+alter table public.profiles add column if not exists username_search text;
 alter table public.profiles add column if not exists avatar_id integer not null default 1;
 alter table public.profiles add column if not exists last_seen timestamptz;
 create unique index if not exists profiles_email_lower_idx
@@ -23,6 +25,9 @@ where email is not null;
 create unique index if not exists profiles_username_lower_idx
 on public.profiles (lower(username))
 where username is not null;
+create unique index if not exists profiles_username_search_idx
+on public.profiles (username_search)
+where username_search is not null;
 
 create table if not exists public.albums (
   user_id uuid primary key references auth.users(id) on delete cascade,

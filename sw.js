@@ -1,4 +1,4 @@
-const CACHE_NAME = "album-copa-2026-tablet-v13-unique-username";
+const CACHE_NAME = "album-copa-2026-tablet-v14-avatar-files-username-case";
 const CORE_ASSETS = [
   "./",
   "./index.html",

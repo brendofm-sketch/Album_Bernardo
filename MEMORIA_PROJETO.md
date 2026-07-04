@@ -38,7 +38,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Recuperacao de senha fica no modal `Conta e sincronizacao`, usando `resetPasswordForEmail` e `updateUser`.
 - Ao publicar, cadastrar nas Redirect URLs do Supabase: `https://brendofm-sketch.github.io/Album_Bernardo/` e o HTML principal.
 - Aba `Amigos`: usa `profiles.email`, `profiles.last_seen`, `friendships` e `messages`; perfil do amigo cruza repetidas/faltantes entre os dois usuarios.
-- Perfil/configuracoes: usa `profiles.username` e `profiles.avatar_id`; busca de amigos deve ser por username, nao por e-mail. O nome exibido deve ser igual ao username, e `profiles_username_lower_idx` garante unicidade.
+- Perfil/configuracoes: usa `profiles.username`, `profiles.username_search` e `profiles.avatar_id`; `username` preserva maiusculas/minusculas como digitado, `username_search` faz busca/unicidade sem diferenciar caixa. O nome exibido deve ser igual ao username.
 
 ## GitHub Pages
 
