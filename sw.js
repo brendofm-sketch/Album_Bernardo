@@ -1,4 +1,4 @@
-const CACHE_NAME = "album-copa-2026-tablet-v21-fundos-paises";
+const CACHE_NAME = "album-copa-2026-tablet-v22-teste-fundo-brasil";
 const CORE_ASSETS = [
   "./",
   "./index.html",
