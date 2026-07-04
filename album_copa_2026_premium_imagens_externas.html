@@ -32,11 +32,12 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
 .sticker{height:166px;border-radius:14px;background:#eadfc8;border:2px dashed #d0b98a;position:relative;overflow:hidden;box-shadow:0 5px 12px #0001;cursor:pointer;transition:.15s}.sticker:hover{transform:translateY(-2px)}.sticker.owned{background:white;border:2px solid #fff}.sticker.missing .art{opacity:.20;filter:grayscale(1)}.sticker .num{position:absolute;left:8px;top:6px;font-weight:900;font-size:13px;z-index:2;color:#101828;background:#ffffffdd;border:1px solid #d9dee8;border-radius:6px;padding:2px 5px;letter-spacing:.2px}.qty-badge{position:absolute;right:7px;top:7px;background:#0f6fff;color:white;border-radius:99px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:900;z-index:3}
 .art{height:128px;display:flex;align-items:end;justify-content:center;background:linear-gradient(135deg,var(--c1),var(--c2));position:relative;overflow:hidden}.art img{width:100%;height:100%;object-fit:contain;background:#fff;display:block}.art svg{width:125px;height:125px;transform:translateY(8px)}.badge-art,.squad-art{font-size:58px;align-items:center}.nameplate{position:absolute;left:9px;right:9px;bottom:8px;background:#0c5bb9;color:white;border-radius:4px;padding:5px;font-size:11px;text-align:center;font-weight:900;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.missing .nameplate{background:transparent;color:#8d7854;font-size:12px}.role{font-weight:500;color:#76664d;font-size:10px;display:block}.owned .role{color:#eaf2ff}.sticker-tools{position:absolute;inset:auto 6px 36px 6px;display:none;gap:5px;justify-content:center}.sticker:hover .sticker-tools{display:flex}.sticker-tools button{font-size:11px;padding:6px 7px;border-radius:8px;box-shadow:none}
 .bottom-actions{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:14px}.action-card{background:#fff;border:1px solid #e7eaf0;border-radius:14px;padding:12px;text-align:center}.action-card b{display:block}
-.panel-title{font-size:18px;font-weight:900;margin:4px 0 14px}.dupes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.dupe{border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;background:#fff;position:relative}.dupe .art{height:86px}.dupe .art svg{width:82px;height:82px}.dupe .nameplate{position:static;border-radius:0;font-size:9px}.stats-card,.tip-card{background:#fff;border:1px solid #e7eaf0;border-radius:16px;padding:14px;margin-top:16px}.row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #eef0f4;padding:9px 0}.row:last-child{border-bottom:0}.progress{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;background:#169b3a}.tip-card{background:#f0fff4;border-color:#86efac}
+.panel-title{font-size:18px;font-weight:900;margin:4px 0 14px}.dupes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.dupe{border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;background:#fff;position:relative}.dupe .art{height:126px}.dupe .art svg{width:110px;height:110px}.dupe .nameplate{position:static;border-radius:0;font-size:10px;padding:7px}.stats-card{background:#fff;border:1px solid #e7eaf0;border-radius:16px;padding:14px;margin-top:16px}.row{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #eef0f4;padding:9px 0}.row:last-child{border-bottom:0}.progress{height:10px;background:#e5e7eb;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;background:#169b3a}
 .modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:50;padding:16px}.modal.open{display:flex}.sheet{max-width:820px;width:100%;background:white;border-radius:22px;padding:20px;max-height:90vh;overflow:auto}.sheet-head{display:flex;justify-content:space-between;align-items:center}.close{background:#111827;border-radius:50%;width:40px;height:40px;padding:0}.preview-sheet{max-width:min(94vw,1120px);display:grid;grid-template-columns:minmax(290px,520px) 1fr;gap:20px;align-items:center;background:#0b1220;color:white}.preview-frame{background:#111827;border-radius:18px;padding:12px;display:flex;align-items:center;justify-content:center;min-height:min(78vh,760px)}.preview-frame img{max-width:100%;max-height:min(76vh,740px);width:auto;height:auto;object-fit:contain;border-radius:14px;box-shadow:0 18px 45px #0008}.preview-info h2{font-size:42px;line-height:1;margin:8px 0}.preview-info p{color:#dbeafe}.preview-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.toast{display:none;position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#111827;color:white;padding:13px 18px;border-radius:14px;z-index:80}textarea{width:100%;min-height:120px;border:1px solid #ddd;border-radius:14px;padding:12px}.pathbox{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:12px;line-height:1.6}
 .preview-sheet{position:relative}.preview-frame{position:relative}.preview-frame.missing img{opacity:.22;filter:grayscale(1)}.preview-frame.owned img{opacity:1;filter:none}.preview-frame .preview-qty{display:none;position:absolute;right:20px;top:20px;background:#0f6fff;color:white;border-radius:999px;min-width:44px;height:44px;padding:0 12px;align-items:center;justify-content:center;font-weight:900;font-size:18px;box-shadow:0 10px 25px #0008;z-index:2}.preview-frame.has-qty .preview-qty{display:flex}.preview-close{position:absolute;right:18px;top:18px;width:58px;height:58px;font-size:30px;background:#111827;border:2px solid #ffffff33;box-shadow:0 10px 24px #0008;z-index:3}.preview-close:hover{background:#1f2937;transform:scale(1.04)}.preview-actions button{min-height:52px;border-radius:14px;padding:0 20px;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}.preview-actions .primary-action{min-width:150px}.preview-actions .secondary-action{min-width:150px}.preview-actions .close-action{min-width:120px}
 .control-sheet{max-width:min(96vw,1180px)}.control-actions{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px}.control-table-wrap{overflow:auto;border:1px solid #d7dde8;border-radius:12px}.control-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}.control-table th,.control-table td{border:1px solid #d7dde8;padding:5px;text-align:center;white-space:nowrap}.control-table th{background:#f1f5f9;position:sticky;top:0;z-index:1}.control-table .team-cell{text-align:left;font-weight:800;min-width:180px}.control-table .code-cell{font-weight:900;background:#f8fafc}.control-table .slot-cell{cursor:pointer;min-width:28px;font-weight:800}.control-table .slot-cell.have{background:#22c55e;color:#052e16}.control-table .slot-cell.miss{background:#fee2e2;color:#991b1b}.control-table .slot-cell.dup{box-shadow:inset 0 0 0 2px #2563eb}.control-table .group-cell{font-size:20px;font-weight:900;background:#f8fafc}.control-legend{display:flex;gap:12px;flex-wrap:wrap;color:#334155;font-size:13px;margin:8px 0}.control-legend span{display:inline-flex;align-items:center;gap:5px}.swatch{width:16px;height:16px;border-radius:4px;display:inline-block}.swatch.have{background:#22c55e}.swatch.miss{background:#fee2e2;border:1px solid #fecaca}.swatch.dup{background:#fff;border:2px solid #2563eb}
 .control-table .slot-special{min-width:118px;white-space:normal;line-height:1.15}.slot-code{display:block;font-weight:900}.slot-name{display:block;font-size:10px;font-weight:700;margin-top:2px}
+.missing-control-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;padding:12px;background:#f8fafc}.missing-card{border:1px solid #d7dde8;border-radius:12px;background:white;overflow:hidden;cursor:pointer;box-shadow:0 8px 18px #0000000f}.missing-card .art{height:150px}.missing-card .art img{opacity:.28;filter:grayscale(1)}.missing-card-info{padding:9px}.missing-card-code{font-weight:900;color:#0f172a}.missing-card-name{font-weight:900;font-size:13px;margin-top:4px}.missing-card-meta{color:#64748b;font-size:12px;margin-top:3px}.missing-empty{padding:28px;text-align:center;font-weight:900;color:#16a34a}
 @media(max-width:1200px){.app{grid-template-columns:260px 1fr}.rightbar{display:none}.hero{grid-template-columns:1fr}.team-title h1{font-size:38px}.grid{gap:10px}.sticker{height:150px}.art{height:114px}.bottom-actions{grid-template-columns:1fr 1fr}}
 @media(min-width:761px) and (max-width:1100px){
   body{background:#eef2f7}.topbar{height:auto;min-height:74px;align-items:flex-start;flex-wrap:wrap;padding:10px 14px}.logo{min-width:220px}.logo .big{font-size:24px}.nav{order:3;width:100%;overflow-x:auto;justify-content:flex-start;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;padding:12px 14px}.app{grid-template-columns:1fr;gap:12px;padding:12px}.sidebar{position:relative;top:auto;height:auto;max-height:none;padding:12px}.sidebar h3{margin:4px 0 10px}.country-list{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));gap:8px;max-height:250px;overflow:auto}.main-card{min-height:auto;padding:14px}.hero{grid-template-columns:1fr;gap:12px}.team-title h1{font-size:40px}.album-page{min-height:auto;padding:14px}.grid{grid-template-columns:repeat(5,minmax(112px,1fr));gap:10px}.sticker{height:172px}.art{height:132px}.bottom-actions{grid-template-columns:repeat(3,1fr)}.action-card{padding:9px}.control-sheet{max-width:98vw}.preview-sheet{grid-template-columns:minmax(280px,46vw) 1fr}
@@ -104,7 +105,6 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
     <h3 class="panel-title" style="margin-top:20px">REPETIDAS <span id="dupTotal" style="float:right;background:#0f6fff;color:white;border-radius:99px;padding:4px 10px">0</span></h3>
     <div id="dupesGrid" class="dupes-grid"></div>
     <button style="width:100%;margin-top:12px" onclick="openTrades()">Ver todas repetidas</button>
-    <div class="tip-card"><h3>DICA</h3><p>As imagens devem ficar em <b>figurinhas/COD_00.webp</b>. Exemplo: <b>figurinhas/BRA_09.webp</b>.</p>🤝</div>
   </aside>
 </div>
 
@@ -141,6 +141,8 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
 <div id="controlModal" class="modal"><div class="sheet control-sheet">
   <div class="sheet-head"><h2>📋 Controle de figurinhas</h2><button class="close" onclick="closeControl()">×</button></div>
   <div class="control-actions">
+    <button id="controlAllBtn" class="gray" onclick="setControlMode('all')">📋 Geral</button>
+    <button id="controlMissingBtn" class="yellow" onclick="setControlMode('missing')">🔎 Só faltantes</button>
     <button onclick="exportControlList()">📄 Exportar controle</button>
     <button onclick="exportMissing()">🔎 Exportar faltantes</button>
     <button class="red" onclick="clearCurrentTeam()">🧹 Apagar país atual</button>
@@ -187,6 +189,7 @@ const ROLE_OVERRIDES = {"ALG01": "ESCUDO", "ALG02": "GOLEIRO", "ALG03": "DEFENSO
 let db = JSON.parse(localStorage.getItem("albumCopaPremiumExternal") || '{"stickers":{},"notes":""}');
 let current = "BRA";
 let previewSticker = null;
+let controlMode = "all";
 
 function key(c,n){return c+"-"+n}
 function imgPath(c,n){return IMAGE_FOLDER + c + "_" + String(n).padStart(2,"0") + IMAGE_EXT}
@@ -346,11 +349,13 @@ function refreshPreview(){
 function previewToggleOwned(){
   if(!previewSticker) return;
   toggleSticker(previewSticker.code,previewSticker.n);
+  if(document.getElementById("controlModal").classList.contains("open")) renderControl();
   refreshPreview();
 }
 function previewAddDup(){
   if(!previewSticker) return;
   addDup(previewSticker.code,previewSticker.n);
+  if(document.getElementById("controlModal").classList.contains("open")) renderControl();
   refreshPreview();
 }
 
@@ -421,6 +426,7 @@ function openStats(){
 }
 function closeStats(){document.getElementById("statsModal").classList.remove("open")}
 function renderControl(){
+  if(controlMode==="missing"){renderMissingControl();return;}
   let html='<table class="control-table"><thead><tr><th>Grupo</th><th>País</th><th>Cód.</th>';
   const maxSlots=Math.max(...GROUPS.map(t=>t.slots.length));
   for(let n=1;n<=maxSlots;n++) html+=`<th>${n}</th>`;
@@ -445,13 +451,36 @@ function renderControl(){
   html+='</tbody></table>';
   document.getElementById("controlList").innerHTML=html;
 }
+function renderMissingControl(){
+  let cards=[];
+  GROUPS.forEach(t=>t.slots.forEach(s=>{
+    if(!owned(t.code,s.n)){
+      const code=t.code+String(s.n).padStart(2,"0");
+      cards.push(`<div class="missing-card" onclick="openStickerPreview('${t.code}',${s.n})">
+        ${artHTML(t,s,false)}
+        <div class="missing-card-info">
+          <div class="missing-card-code">${code}</div>
+          <div class="missing-card-name">${s.name}</div>
+          <div class="missing-card-meta">${t.name} · ${roleFor(s,t.code)}</div>
+        </div>
+      </div>`);
+    }
+  }));
+  document.getElementById("controlList").innerHTML=cards.length?`<div class="missing-control-grid">${cards.join("")}</div>`:`<div class="missing-empty">Todas as figurinhas estão marcadas como tenho.</div>`;
+}
+function setControlMode(mode){
+  controlMode=mode;
+  document.getElementById("controlAllBtn").className=mode==="all"?"yellow":"gray";
+  document.getElementById("controlMissingBtn").className=mode==="missing"?"yellow":"gray";
+  renderControl();
+}
 function toggleControlCell(c,n){
   const q=get(c,n).qty;
   set(c,n,{qty:q>0?0:1});
   renderControl();
   if(c===current) renderAlbum();
 }
-function openControl(){renderControl();document.getElementById("controlModal").classList.add("open")}
+function openControl(){setControlMode(controlMode);document.getElementById("controlModal").classList.add("open")}
 function closeControl(){document.getElementById("controlModal").classList.remove("open")}
 function resetAll(){if(confirm("Apagar todo o álbum?")){db={stickers:{},notes:""};save();renderAlbum();}}
 function showAllCountries(){document.getElementById("search").value="";renderCountries();}
