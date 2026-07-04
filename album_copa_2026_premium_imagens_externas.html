@@ -37,6 +37,7 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
 .preview-sheet{position:relative}.preview-frame{position:relative}.preview-frame.missing img{opacity:.22;filter:grayscale(1)}.preview-frame.owned img{opacity:1;filter:none}.preview-frame .preview-qty{display:none;position:absolute;right:20px;top:20px;background:#0f6fff;color:white;border-radius:999px;min-width:44px;height:44px;padding:0 12px;align-items:center;justify-content:center;font-weight:900;font-size:18px;box-shadow:0 10px 25px #0008;z-index:2}.preview-frame.has-qty .preview-qty{display:flex}.preview-close{position:absolute;right:18px;top:18px;width:58px;height:58px;font-size:30px;background:#111827;border:2px solid #ffffff33;box-shadow:0 10px 24px #0008;z-index:3}.preview-close:hover{background:#1f2937;transform:scale(1.04)}.preview-actions button{min-height:52px;border-radius:14px;padding:0 20px;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:8px}.preview-actions .primary-action{min-width:150px}.preview-actions .secondary-action{min-width:150px}.preview-actions .close-action{min-width:120px}
 .control-sheet{max-width:min(96vw,1180px)}.control-actions{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 14px}.control-table-wrap{overflow:auto;border:1px solid #d7dde8;border-radius:12px}.control-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff}.control-table th,.control-table td{border:1px solid #d7dde8;padding:5px;text-align:center;white-space:nowrap}.control-table th{background:#f1f5f9;position:sticky;top:0;z-index:1}.control-table .team-cell{text-align:left;font-weight:800;min-width:180px}.control-table .code-cell{font-weight:900;background:#f8fafc}.control-table .slot-cell{cursor:pointer;min-width:28px;font-weight:800}.control-table .slot-cell.have{background:#22c55e;color:#052e16}.control-table .slot-cell.miss{background:#fee2e2;color:#991b1b}.control-table .slot-cell.dup{box-shadow:inset 0 0 0 2px #2563eb}.control-table .group-cell{font-size:20px;font-weight:900;background:#f8fafc}.control-legend{display:flex;gap:12px;flex-wrap:wrap;color:#334155;font-size:13px;margin:8px 0}.control-legend span{display:inline-flex;align-items:center;gap:5px}.swatch{width:16px;height:16px;border-radius:4px;display:inline-block}.swatch.have{background:#22c55e}.swatch.miss{background:#fee2e2;border:1px solid #fecaca}.swatch.dup{background:#fff;border:2px solid #2563eb}
 .control-table .slot-special{min-width:118px;white-space:normal;line-height:1.15}.slot-code{display:block;font-weight:900}.slot-name{display:block;font-size:10px;font-weight:700;margin-top:2px}
+.missing-filter{display:none;margin:0 0 12px}.missing-filter.active{display:block}.missing-filter input{width:100%;border:1px solid #d7dde8;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:700}
 .missing-control-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;padding:12px;background:#f8fafc}.missing-card{border:1px solid #d7dde8;border-radius:12px;background:white;overflow:hidden;cursor:pointer;box-shadow:0 8px 18px #0000000f}.missing-card .art{height:150px}.missing-card .art img{opacity:.28;filter:grayscale(1)}.missing-card-info{padding:9px}.missing-card-code{font-weight:900;color:#0f172a}.missing-card-name{font-weight:900;font-size:13px;margin-top:4px}.missing-card-meta{color:#64748b;font-size:12px;margin-top:3px}.missing-empty{padding:28px;text-align:center;font-weight:900;color:#16a34a}
 @media(max-width:1200px){.app{grid-template-columns:260px 1fr}.rightbar{display:none}.hero{grid-template-columns:1fr}.team-title h1{font-size:38px}.grid{gap:10px}.sticker{height:150px}.art{height:114px}.bottom-actions{grid-template-columns:1fr 1fr}}
 @media(min-width:761px) and (max-width:1100px){
@@ -155,6 +156,7 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
     <span><i class="swatch dup"></i>Repetida</span>
     <span>Clique em um número para alternar tenho/falta.</span>
   </div>
+  <div id="missingFilterBox" class="missing-filter"><input id="missingSearch" placeholder="Buscar faltante por código, nome, país ou posição..." oninput="renderControl()"></div>
   <div class="control-table-wrap"><div id="controlList"></div></div>
 </div></div>
 
@@ -453,25 +455,30 @@ function renderControl(){
 }
 function renderMissingControl(){
   let cards=[];
+  const query=(document.getElementById("missingSearch")?.value||"").trim().toLowerCase();
   GROUPS.forEach(t=>t.slots.forEach(s=>{
     if(!owned(t.code,s.n)){
       const code=t.code+String(s.n).padStart(2,"0");
+      const role=roleFor(s,t.code);
+      const haystack=`${code} ${t.code} ${s.name} ${t.name} ${role}`.toLowerCase();
+      if(query && !haystack.includes(query)) return;
       cards.push(`<div class="missing-card" onclick="openStickerPreview('${t.code}',${s.n})">
         ${artHTML(t,s,false)}
         <div class="missing-card-info">
           <div class="missing-card-code">${code}</div>
           <div class="missing-card-name">${s.name}</div>
-          <div class="missing-card-meta">${t.name} · ${roleFor(s,t.code)}</div>
+          <div class="missing-card-meta">${t.name} · ${role}</div>
         </div>
       </div>`);
     }
   }));
-  document.getElementById("controlList").innerHTML=cards.length?`<div class="missing-control-grid">${cards.join("")}</div>`:`<div class="missing-empty">Todas as figurinhas estão marcadas como tenho.</div>`;
+  document.getElementById("controlList").innerHTML=cards.length?`<div class="missing-control-grid">${cards.join("")}</div>`:`<div class="missing-empty">${query?"Nenhuma faltante encontrada para essa busca.":"Todas as figurinhas estão marcadas como tenho."}</div>`;
 }
 function setControlMode(mode){
   controlMode=mode;
   document.getElementById("controlAllBtn").className=mode==="all"?"yellow":"gray";
   document.getElementById("controlMissingBtn").className=mode==="missing"?"yellow":"gray";
+  document.getElementById("missingFilterBox").classList.toggle("active",mode==="missing");
   renderControl();
 }
 function toggleControlCell(c,n){
