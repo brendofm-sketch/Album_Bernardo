@@ -47,6 +47,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Textos de login: manter a tela curta e sem explicacoes tecnicas sobre Supabase/sincronizacao; traduzir erros tecnicos para mensagens simples.
 - Fundos de paises: imagens ativas ficam em `Fundo/COD.webp` e sao aplicadas por `ALBUM_BACKGROUNDS` como camada translucida sobre o papel do album. PNGs originais ficam em `Obsoleto/Fundo_originais/`.
 - Fundo geral: paises com imagem em `ALBUM_BACKGROUNDS` tambem aplicam `Fundo/COD.webp` no fundo do site; a barra direita pode ser recolhida e o estado fica em `albumRightbarCollapsed`.
+- Mobile: a barra direita deve virar secao horizontal abaixo do album; recolhida, mostra apenas um botao horizontal. Evitar faixa vertical alta em telas pequenas.
 
 ## GitHub Pages
 
