@@ -5,9 +5,17 @@
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   display_name text not null,
+  email text,
+  last_seen timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.profiles add column if not exists email text;
+alter table public.profiles add column if not exists last_seen timestamptz;
+create unique index if not exists profiles_email_lower_idx
+on public.profiles (lower(email))
+where email is not null;
 
 create table if not exists public.albums (
   user_id uuid primary key references auth.users(id) on delete cascade,
@@ -35,10 +43,34 @@ create table if not exists public.trade_offers (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.friendships (
+  id uuid primary key default gen_random_uuid(),
+  requester uuid not null references auth.users(id) on delete cascade,
+  addressee uuid not null references auth.users(id) on delete cascade,
+  status text not null default 'pending' check (status in ('pending','accepted','declined','blocked')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint friendships_no_self check (requester <> addressee)
+);
+
+create unique index if not exists friendships_pair_idx
+on public.friendships (least(requester, addressee), greatest(requester, addressee));
+
+create table if not exists public.messages (
+  id uuid primary key default gen_random_uuid(),
+  sender uuid not null references auth.users(id) on delete cascade,
+  receiver uuid not null references auth.users(id) on delete cascade,
+  body text not null check (char_length(body) between 1 and 1000),
+  read_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
 alter table public.profiles enable row level security;
 alter table public.albums enable row level security;
 alter table public.user_stickers enable row level security;
 alter table public.trade_offers enable row level security;
+alter table public.friendships enable row level security;
+alter table public.messages enable row level security;
 
 drop policy if exists "profiles_select_authenticated" on public.profiles;
 create policy "profiles_select_authenticated"
@@ -127,3 +159,54 @@ on public.trade_offers for update
 to authenticated
 using (auth.uid() = from_user or auth.uid() = to_user)
 with check (auth.uid() = from_user or auth.uid() = to_user);
+
+drop policy if exists "friendships_select_participant" on public.friendships;
+create policy "friendships_select_participant"
+on public.friendships for select
+to authenticated
+using (auth.uid() = requester or auth.uid() = addressee);
+
+drop policy if exists "friendships_insert_own" on public.friendships;
+create policy "friendships_insert_own"
+on public.friendships for insert
+to authenticated
+with check (auth.uid() = requester);
+
+drop policy if exists "friendships_update_participant" on public.friendships;
+create policy "friendships_update_participant"
+on public.friendships for update
+to authenticated
+using (auth.uid() = requester or auth.uid() = addressee)
+with check (auth.uid() = requester or auth.uid() = addressee);
+
+drop policy if exists "friendships_delete_participant" on public.friendships;
+create policy "friendships_delete_participant"
+on public.friendships for delete
+to authenticated
+using (auth.uid() = requester or auth.uid() = addressee);
+
+drop policy if exists "messages_select_participant" on public.messages;
+create policy "messages_select_participant"
+on public.messages for select
+to authenticated
+using (auth.uid() = sender or auth.uid() = receiver);
+
+drop policy if exists "messages_insert_sender" on public.messages;
+create policy "messages_insert_sender"
+on public.messages for insert
+to authenticated
+with check (
+  auth.uid() = sender
+  and exists (
+    select 1 from public.friendships f
+    where f.status = 'accepted'
+      and ((f.requester = sender and f.addressee = receiver) or (f.requester = receiver and f.addressee = sender))
+  )
+);
+
+drop policy if exists "messages_update_receiver" on public.messages;
+create policy "messages_update_receiver"
+on public.messages for update
+to authenticated
+using (auth.uid() = receiver)
+with check (auth.uid() = receiver);

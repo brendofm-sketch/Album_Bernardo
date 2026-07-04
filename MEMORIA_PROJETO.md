@@ -37,6 +37,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - O app compara trocas lendo `user_stickers` de usuarios autenticados: quem tem repetida de uma faltante sua e quem precisa de uma repetida sua.
 - Recuperacao de senha fica no modal `Conta e sincronizacao`, usando `resetPasswordForEmail` e `updateUser`.
 - Ao publicar, cadastrar nas Redirect URLs do Supabase: `https://brendofm-sketch.github.io/Album_Bernardo/` e o HTML principal.
+- Aba `Amigos`: usa `profiles.email`, `profiles.last_seen`, `friendships` e `messages`; perfil do amigo cruza repetidas/faltantes entre os dois usuarios.
 
 ## GitHub Pages
 
