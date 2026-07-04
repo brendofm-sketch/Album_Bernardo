@@ -69,6 +69,21 @@ No tablet, abra o link do GitHub Pages e use a opcao do navegador para adicionar
 
 O progresso fica salvo no navegador do aparelho. Use `Backup` e `Importar JSON` dentro do app para transferir progresso entre aparelhos.
 
+## Supabase
+
+O desenvolvimento com login e trocas esta no branch `supabase-dev`, para nao mexer no link publico usado pelo Bernardo enquanto a nuvem e testada.
+
+Antes de testar login:
+
+1. Abra o Supabase do projeto.
+2. Va em `SQL Editor`.
+3. Cole e rode o conteudo de `supabase/schema.sql`.
+4. Abra o app no branch de teste e use o botao `Nuvem`.
+
+A chave usada no HTML e a publishable key. Nao coloque `service_role` ou secret key no app estatico.
+
+O app continua local-first: salva no `localStorage`, funciona offline, e quando entra na conta sincroniza com o Supabase mesclando as quantidades maiores de cada figurinha.
+
 ## Obsoleto
 
 A pasta `Obsoleto/` guarda PDFs, recortes, backups, referencias, auditorias e scripts antigos. Ela fica fora do GitHub pelo `.gitignore`.

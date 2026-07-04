@@ -39,12 +39,14 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
 .control-table .slot-special{min-width:118px;white-space:normal;line-height:1.15}.slot-code{display:block;font-weight:900}.slot-name{display:block;font-size:10px;font-weight:700;margin-top:2px}
 .missing-filter{display:none;margin:0 0 12px}.missing-filter.active{display:block}.missing-filter input{width:100%;border:1px solid #d7dde8;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:700}
 .missing-control-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;padding:12px;background:#f8fafc}.missing-card{border:1px solid #d7dde8;border-radius:12px;background:white;overflow:hidden;cursor:pointer;box-shadow:0 8px 18px #0000000f}.missing-card .art{height:150px}.missing-card .art img{opacity:.28;filter:grayscale(1)}.missing-card-info{padding:9px}.missing-card-code{font-weight:900;color:#0f172a}.missing-card-name{font-weight:900;font-size:13px;margin-top:4px}.missing-card-meta{color:#64748b;font-size:12px;margin-top:3px}.missing-empty{padding:28px;text-align:center;font-weight:900;color:#16a34a}
+.auth-pill{background:#0f766e;white-space:nowrap}.cloud-card{border:1px solid #d7dde8;border-radius:16px;background:#f8fafc;padding:14px;margin:14px 0}.cloud-status{font-weight:900;color:#0f172a;margin:8px 0}.auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.auth-grid label{font-size:13px;font-weight:900;color:#334155}.auth-grid input{width:100%;margin-top:5px;border:1px solid #d7dde8;border-radius:12px;padding:12px;font-size:15px}.cloud-actions,.trade-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.trade-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}.trade-box{border:1px solid #d7dde8;border-radius:16px;background:#fff;padding:12px;min-height:120px}.trade-box h3{margin:0 0 10px}.trade-user{border-top:1px solid #eef0f4;padding:10px 0}.trade-user:first-of-type{border-top:0}.trade-user b{display:block}.trade-code{display:inline-flex;align-items:center;gap:4px;background:#eef3fb;color:#0f172a;border-radius:999px;padding:5px 8px;margin:5px 5px 0 0;font-weight:900;font-size:12px}.muted{color:#64748b}.sync-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#94a3b8;margin-right:6px}.sync-dot.online{background:#22c55e}.sync-dot.offline{background:#f59e0b}
 @media(max-width:1200px){.app{grid-template-columns:260px 1fr}.rightbar{display:none}.hero{grid-template-columns:1fr}.team-title h1{font-size:38px}.grid{gap:10px}.sticker{height:150px}.art{height:114px}.bottom-actions{grid-template-columns:1fr 1fr}}
 @media(min-width:761px) and (max-width:1100px){
   body{background:#eef2f7}.topbar{height:auto;min-height:74px;align-items:flex-start;flex-wrap:wrap;padding:10px 14px}.logo{min-width:220px}.logo .big{font-size:24px}.nav{order:3;width:100%;overflow-x:auto;justify-content:flex-start;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav button{white-space:nowrap;padding:12px 14px}.app{grid-template-columns:1fr;gap:12px;padding:12px}.sidebar{position:relative;top:auto;height:auto;max-height:none;padding:12px}.sidebar h3{margin:4px 0 10px}.country-list{display:grid;grid-template-columns:repeat(3,minmax(210px,1fr));gap:8px;max-height:250px;overflow:auto}.main-card{min-height:auto;padding:14px}.hero{grid-template-columns:1fr;gap:12px}.team-title h1{font-size:40px}.album-page{min-height:auto;padding:14px}.grid{grid-template-columns:repeat(5,minmax(112px,1fr));gap:10px}.sticker{height:172px}.art{height:132px}.bottom-actions{grid-template-columns:repeat(3,1fr)}.action-card{padding:9px}.control-sheet{max-width:98vw}.preview-sheet{grid-template-columns:minmax(280px,46vw) 1fr}
 }
-@media(max-width:760px){.topbar{height:auto;flex-wrap:wrap}.logo{min-width:0}.nav{order:3;overflow:auto;width:100%}.app{grid-template-columns:1fr;padding:10px}.sidebar{position:static;height:auto}.main-card{padding:12px}.grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:repeat(2,1fr)}.bottom-actions{grid-template-columns:1fr}.team-title h1{font-size:30px}.preview-sheet{grid-template-columns:1fr}.preview-info h2{font-size:30px}.preview-frame{min-height:auto}}
+@media(max-width:760px){.topbar{height:auto;flex-wrap:wrap}.logo{min-width:0}.nav{order:3;overflow:auto;width:100%}.app{grid-template-columns:1fr;padding:10px}.sidebar{position:static;height:auto}.main-card{padding:12px}.grid{grid-template-columns:repeat(2,1fr)}.summary{grid-template-columns:repeat(2,1fr)}.bottom-actions{grid-template-columns:1fr}.team-title h1{font-size:30px}.preview-sheet{grid-template-columns:1fr}.preview-info h2{font-size:30px}.preview-frame{min-height:auto}.auth-grid,.trade-columns{grid-template-columns:1fr}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div class="topbar">
@@ -58,6 +60,7 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
     <button data-tab="control" onclick="setView('control')">📋 Controle</button>
   </div>
   <button id="installBtn" style="display:none" onclick="installApp()">📲 Instalar</button>
+  <button id="cloudBtn" class="auth-pill" onclick="openAuth()">☁️ Entrar</button>
   <button onclick="openHelp()">📁 Pasta imagens</button>
 </div>
 
@@ -114,10 +117,34 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
     <button onclick="exportJSON()">💾 Exportar JSON</button>
     <label class="filebtn">📂 Importar JSON<input type="file" accept=".json" onchange="importJSON(event)"></label>
+    <button class="auth-pill" onclick="openAuth()">☁️ Conta e sincronização</button>
     <button class="red" onclick="resetAll()">Limpar tudo</button>
   </div>
   <div id="tradeList"></div>
+  <div class="cloud-card">
+    <div class="cloud-status"><span id="tradeCloudDot" class="sync-dot"></span><span id="tradeCloudStatus">Entre na conta para comparar trocas.</span></div>
+    <div id="cloudTrades"></div>
+  </div>
   <h3>Anotações de troca</h3><textarea id="notes" placeholder="Ex: Trocar BRA 14 por ARG 16..."></textarea>
+</div></div>
+
+<div id="authModal" class="modal"><div class="sheet">
+  <div class="sheet-head"><h2>☁️ Conta e sincronização</h2><button class="close" onclick="closeAuth()">×</button></div>
+  <div class="cloud-card">
+    <div class="cloud-status"><span id="authCloudDot" class="sync-dot"></span><span id="authStatus">Carregando...</span></div>
+    <p class="muted">O álbum continua salvo neste tablet. Ao entrar, o app envia uma cópia para o Supabase e mistura os dados usando a maior quantidade de cada figurinha.</p>
+  </div>
+  <div class="auth-grid">
+    <label>Nome no álbum<input id="authName" autocomplete="name" placeholder="Ex: Bernardo"></label>
+    <label>E-mail<input id="authEmail" type="email" autocomplete="email" placeholder="email@exemplo.com"></label>
+    <label>Senha<input id="authPassword" type="password" autocomplete="current-password" placeholder="Mínimo 6 caracteres"></label>
+  </div>
+  <div class="cloud-actions">
+    <button class="green" onclick="signIn()">Entrar</button>
+    <button onclick="signUp()">Criar conta</button>
+    <button class="auth-pill" onclick="syncNow()">Sincronizar agora</button>
+    <button class="gray" onclick="signOut()">Sair</button>
+  </div>
 </div></div>
 
 <div id="helpModal" class="modal"><div class="sheet">
@@ -187,11 +214,18 @@ const GROUPS = [...TEAMS, ...SPECIAL_GROUPS];
 const IMAGE_FOLDER = "figurinhas/";
 const IMAGE_EXT = ".webp";
 const FLAG_FOLDER = "bandeiras/";
+const SUPABASE_URL = "https://gjtrxzczvbtvftjqdmah.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_7Gun7hMwR2CTrda7kXmGug_caMWj2Kc";
 const ROLE_OVERRIDES = {"ALG01": "ESCUDO", "ALG02": "GOLEIRO", "ALG03": "DEFENSOR", "ALG04": "DEFENSOR", "ALG05": "DEFENSOR", "ALG06": "DEFENSOR", "ALG07": "DEFENSOR", "ALG08": "DEFENSOR", "ALG09": "MEIO-CAMPISTA", "ALG10": "MEIO-CAMPISTA", "ALG11": "MEIO-CAMPISTA", "ALG12": "MEIO-CAMPISTA", "ALG13": "ELENCO", "ALG14": "MEIO-CAMPISTA", "ALG15": "ATACANTE", "ALG16": "ATACANTE", "ALG17": "ATACANTE", "ALG18": "ATACANTE", "ALG19": "ATACANTE", "ALG20": "ATACANTE", "ARG01": "ESCUDO", "ARG02": "GOLEIRO", "ARG03": "DEFENSOR", "ARG04": "DEFENSOR", "ARG05": "DEFENSOR", "ARG06": "DEFENSOR", "ARG07": "DEFENSOR", "ARG08": "MEIO-CAMPISTA", "ARG09": "MEIO-CAMPISTA", "ARG10": "MEIO-CAMPISTA", "ARG11": "MEIO-CAMPISTA", "ARG12": "MEIO-CAMPISTA", "ARG13": "ELENCO", "ARG14": "ATACANTE", "ARG15": "ATACANTE", "ARG16": "ATACANTE", "ARG17": "ATACANTE", "ARG18": "ATACANTE", "ARG19": "ATACANTE", "ARG20": "ATACANTE", "AUS01": "ESCUDO", "AUS02": "GOLEIRO", "AUS03": "DEFENSOR", "AUS04": "DEFENSOR", "AUS05": "DEFENSOR", "AUS06": "DEFENSOR", "AUS07": "DEFENSOR", "AUS08": "DEFENSOR", "AUS09": "DEFENSOR", "AUS10": "DEFENSOR", "AUS11": "MEIO-CAMPISTA", "AUS12": "MEIO-CAMPISTA", "AUS13": "ELENCO", "AUS14": "MEIO-CAMPISTA", "AUS15": "MEIO-CAMPISTA", "AUS16": "ATACANTE", "AUS17": "ATACANTE", "AUS18": "ATACANTE", "AUS19": "ATACANTE", "AUS20": "ATACANTE", "AUT01": "ESCUDO", "AUT02": "GOLEIRO", "AUT03": "GOLEIRO", "AUT04": "DEFENSOR", "AUT05": "DEFENSOR", "AUT06": "DEFENSOR", "AUT07": "DEFENSOR", "AUT08": "DEFENSOR", "AUT09": "MEIO-CAMPISTA", "AUT10": "MEIO-CAMPISTA", "AUT11": "MEIO-CAMPISTA", "AUT12": "MEIO-CAMPISTA", "AUT13": "ELENCO", "AUT14": "MEIO-CAMPISTA", "AUT15": "MEIO-CAMPISTA", "AUT16": "MEIO-CAMPISTA", "AUT17": "ATACANTE", "AUT18": "ATACANTE", "AUT19": "ATACANTE", "AUT20": "ATACANTE", "BEL01": "ESCUDO", "BEL02": "GOLEIRO", "BEL03": "DEFENSOR", "BEL04": "DEFENSOR", "BEL05": "DEFENSOR", "BEL06": "DEFENSOR", "BEL07": "DEFENSOR", "BEL08": "DEFENSOR", "BEL09": "MEIO-CAMPISTA", "BEL10": "MEIO-CAMPISTA", "BEL11": "MEIO-CAMPISTA", "BEL12": "MEIO-CAMPISTA", "BEL13": "ELENCO", "BEL14": "MEIO-CAMPISTA", "BEL15": "MEIO-CAMPISTA", "BEL16": "ATACANTE", "BEL17": "ATACANTE", "BEL18": "ATACANTE", "BEL19": "ATACANTE", "BEL20": "ATACANTE", "BIH01": "ESCUDO", "BIH02": "GOLEIRO", "BIH03": "DEFENSOR", "BIH04": "DEFENSOR", "BIH05": "DEFENSOR", "BIH06": "DEFENSOR", "BIH07": "DEFENSOR", "BIH08": "MEIO-CAMPISTA", "BIH09": "MEIO-CAMPISTA", "BIH10": "MEIO-CAMPISTA", "BIH11": "MEIO-CAMPISTA", "BIH12": "MEIO-CAMPISTA", "BIH13": "ELENCO", "BIH14": "MEIO-CAMPISTA", "BIH15": "MEIO-CAMPISTA", "BIH16": "MEIO-CAMPISTA", "BIH17": "ATACANTE", "BIH18": "ATACANTE", "BIH19": "ATACANTE", "BIH20": "ATACANTE", "BRA01": "ESCUDO", "BRA02": "GOLEIRO", "BRA03": "GOLEIRO", "BRA04": "DEFENSOR", "BRA05": "DEFENSOR", "BRA06": "DEFENSOR", "BRA07": "DEFENSOR", "BRA08": "DEFENSOR", "BRA09": "MEIO-CAMPISTA", "BRA10": "MEIO-CAMPISTA", "BRA11": "MEIO-CAMPISTA", "BRA12": "ATACANTE", "BRA13": "ELENCO", "BRA14": "ATACANTE", "BRA15": "ATACANTE", "BRA16": "ATACANTE", "BRA17": "ATACANTE", "BRA18": "ATACANTE", "BRA19": "ATACANTE", "BRA20": "ATACANTE", "CAN01": "ESCUDO", "CAN02": "GOLEIRO", "CAN03": "DEFENSOR", "CAN04": "DEFENSOR", "CAN05": "DEFENSOR", "CAN06": "DEFENSOR", "CAN07": "DEFENSOR", "CAN08": "DEFENSOR", "CAN09": "DEFENSOR", "CAN10": "MEIO-CAMPISTA", "CAN11": "MEIO-CAMPISTA", "CAN12": "MEIO-CAMPISTA", "CAN13": "ELENCO", "CAN14": "MEIO-CAMPISTA", "CAN15": "MEIO-CAMPISTA", "CAN16": "MEIO-CAMPISTA", "CAN17": "ATACANTE", "CAN18": "ATACANTE", "CAN19": "ATACANTE", "CAN20": "ATACANTE", "CIV01": "ESCUDO", "CIV02": "GOLEIRO", "CIV03": "DEFENSOR", "CIV04": "DEFENSOR", "CIV05": "DEFENSOR", "CIV06": "DEFENSOR", "CIV07": "DEFENSOR", "CIV08": "DEFENSOR", "CIV09": "DEFENSOR", "CIV10": "MEIO-CAMPISTA", "CIV11": "MEIO-CAMPISTA", "CIV12": "MEIO-CAMPISTA", "CIV13": "ELENCO", "CIV14": "ATACANTE", "CIV15": "ATACANTE", "CIV16": "ATACANTE", "CIV17": "ATACANTE", "CIV18": "ATACANTE", "CIV19": "ATACANTE", "CIV20": "ATACANTE", "COD01": "ESCUDO", "COD02": "GOLEIRO", "COD03": "DEFENSOR", "COD04": "DEFENSOR", "COD05": "DEFENSOR", "COD06": "DEFENSOR", "COD07": "DEFENSOR", "COD08": "MEIO-CAMPISTA", "COD09": "MEIO-CAMPISTA", "COD10": "MEIO-CAMPISTA", "COD11": "MEIO-CAMPISTA", "COD12": "MEIO-CAMPISTA", "COD13": "ELENCO", "COD14": "MEIO-CAMPISTA", "COD15": "MEIO-CAMPISTA", "COD16": "ATACANTE", "COD17": "ATACANTE", "COD18": "ATACANTE", "COD19": "ATACANTE", "COD20": "ATACANTE", "COL01": "ESCUDO", "COL02": "GOLEIRO", "COL03": "GOLEIRO", "COL04": "DEFENSOR", "COL05": "DEFENSOR", "COL06": "DEFENSOR", "COL07": "DEFENSOR", "COL08": "DEFENSOR", "COL09": "DEFENSOR", "COL10": "MEIO-CAMPISTA", "COL11": "MEIO-CAMPISTA", "COL12": "MEIO-CAMPISTA", "COL13": "ELENCO", "COL14": "MEIO-CAMPISTA", "COL15": "MEIO-CAMPISTA", "COL16": "MEIO-CAMPISTA", "COL17": "ATACANTE", "COL18": "ATACANTE", "COL19": "ATACANTE", "COL20": "ATACANTE", "CPV01": "ESCUDO", "CPV02": "GOLEIRO", "CPV03": "DEFENSOR", "CPV04": "DEFENSOR", "CPV05": "DEFENSOR", "CPV06": "DEFENSOR", "CPV07": "DEFENSOR", "CPV08": "MEIO-CAMPISTA", "CPV09": "MEIO-CAMPISTA", "CPV10": "MEIO-CAMPISTA", "CPV11": "MEIO-CAMPISTA", "CPV12": "MEIO-CAMPISTA", "CPV13": "ELENCO", "CPV14": "MEIO-CAMPISTA", "CPV15": "MEIO-CAMPISTA", "CPV16": "MEIO-CAMPISTA", "CPV17": "ATACANTE", "CPV18": "ATACANTE", "CPV19": "ATACANTE", "CPV20": "ATACANTE", "CRO01": "ESCUDO", "CRO02": "GOLEIRO", "CRO03": "DEFENSOR", "CRO04": "DEFENSOR", "CRO05": "DEFENSOR", "CRO06": "DEFENSOR", "CRO07": "DEFENSOR", "CRO08": "DEFENSOR", "CRO09": "MEIO-CAMPISTA", "CRO10": "MEIO-CAMPISTA", "CRO11": "MEIO-CAMPISTA", "CRO12": "MEIO-CAMPISTA", "CRO13": "ELENCO", "CRO14": "MEIO-CAMPISTA", "CRO15": "MEIO-CAMPISTA", "CRO16": "ATACANTE", "CRO17": "ATACANTE", "CRO18": "ATACANTE", "CRO19": "ATACANTE", "CRO20": "ATACANTE", "CUW01": "ESCUDO", "CUW02": "GOLEIRO", "CUW03": "DEFENSOR", "CUW04": "DEFENSOR", "CUW05": "DEFENSOR", "CUW06": "DEFENSOR", "CUW07": "DEFENSOR", "CUW08": "DEFENSOR", "CUW09": "MEIO-CAMPISTA", "CUW10": "MEIO-CAMPISTA", "CUW11": "MEIO-CAMPISTA", "CUW12": "MEIO-CAMPISTA", "CUW13": "ELENCO", "CUW14": "MEIO-CAMPISTA", "CUW15": "ATACANTE", "CUW16": "ATACANTE", "CUW17": "ATACANTE", "CUW18": "ATACANTE", "CUW19": "ATACANTE", "CUW20": "ATACANTE", "CZE01": "ESCUDO", "CZE02": "GOLEIRO", "CZE03": "GOLEIRO", "CZE04": "DEFENSOR", "CZE05": "DEFENSOR", "CZE06": "DEFENSOR", "CZE07": "DEFENSOR", "CZE08": "DEFENSOR", "CZE09": "MEIO-CAMPISTA", "CZE10": "MEIO-CAMPISTA", "CZE11": "MEIO-CAMPISTA", "CZE12": "MEIO-CAMPISTA", "CZE13": "ELENCO", "CZE14": "ATACANTE", "CZE15": "ATACANTE", "CZE16": "ATACANTE", "CZE17": "ATACANTE", "CZE18": "ATACANTE", "CZE19": "ATACANTE", "CZE20": "ATACANTE", "ECU01": "ESCUDO", "ECU02": "GOLEIRO", "ECU03": "GOLEIRO", "ECU04": "DEFENSOR", "ECU05": "DEFENSOR", "ECU06": "DEFENSOR", "ECU07": "DEFENSOR", "ECU08": "DEFENSOR", "ECU09": "MEIO-CAMPISTA", "ECU10": "MEIO-CAMPISTA", "ECU11": "MEIO-CAMPISTA", "ECU12": "MEIO-CAMPISTA", "ECU13": "ELENCO", "ECU14": "MEIO-CAMPISTA", "ECU15": "MEIO-CAMPISTA", "ECU16": "ATACANTE", "ECU17": "ATACANTE", "ECU18": "ATACANTE", "ECU19": "ATACANTE", "ECU20": "ATACANTE", "EGY01": "ESCUDO", "EGY02": "GOLEIRO", "EGY03": "DEFENSOR", "EGY04": "DEFENSOR", "EGY05": "DEFENSOR", "EGY06": "DEFENSOR", "EGY07": "DEFENSOR", "EGY08": "DEFENSOR", "EGY09": "DEFENSOR", "EGY10": "MEIO-CAMPISTA", "EGY11": "ATACANTE", "EGY12": "ATACANTE", "EGY13": "ELENCO", "EGY14": "ATACANTE", "EGY15": "ATACANTE", "EGY16": "ATACANTE", "EGY17": "ATACANTE", "EGY18": "ATACANTE", "EGY19": "ATACANTE", "EGY20": "ATACANTE", "ENG01": "ESCUDO", "ENG02": "GOLEIRO", "ENG03": "DEFENSOR", "ENG04": "DEFENSOR", "ENG05": "DEFENSOR", "ENG06": "DEFENSOR", "ENG07": "DEFENSOR", "ENG08": "DEFENSOR", "ENG09": "MEIO-CAMPISTA", "ENG10": "MEIO-CAMPISTA", "ENG11": "MEIO-CAMPISTA", "ENG12": "MEIO-CAMPISTA", "ENG13": "ELENCO", "ENG14": "MEIO-CAMPISTA", "ENG15": "ATACANTE", "ENG16": "ATACANTE", "ENG17": "ATACANTE", "ENG18": "ATACANTE", "ENG19": "ATACANTE", "ENG20": "ATACANTE", "ESP01": "ESCUDO", "ESP02": "GOLEIRO", "ESP03": "DEFENSOR", "ESP04": "DEFENSOR", "ESP05": "DEFENSOR", "ESP06": "DEFENSOR", "ESP07": "DEFENSOR", "ESP08": "DEFENSOR", "ESP09": "MEIO-CAMPISTA", "ESP10": "MEIO-CAMPISTA", "ESP11": "MEIO-CAMPISTA", "ESP12": "MEIO-CAMPISTA", "ESP13": "ELENCO", "ESP14": "MEIO-CAMPISTA", "ESP15": "ATACANTE", "ESP16": "ATACANTE", "ESP17": "ATACANTE", "ESP18": "ATACANTE", "ESP19": "ATACANTE", "ESP20": "ATACANTE", "FRA01": "ESCUDO", "FRA02": "GOLEIRO", "FRA03": "DEFENSOR", "FRA04": "DEFENSOR", "FRA05": "DEFENSOR", "FRA06": "DEFENSOR", "FRA07": "DEFENSOR", "FRA08": "DEFENSOR", "FRA09": "MEIO-CAMPISTA", "FRA10": "MEIO-CAMPISTA", "FRA11": "MEIO-CAMPISTA", "FRA12": "MEIO-CAMPISTA", "FRA13": "ELENCO", "FRA14": "ATACANTE", "FRA15": "ATACANTE", "FRA16": "ATACANTE", "FRA17": "ATACANTE", "FRA18": "ATACANTE", "FRA19": "ATACANTE", "FRA20": "ATACANTE", "GER01": "ESCUDO", "GER02": "GOLEIRO", "GER03": "DEFENSOR", "GER04": "DEFENSOR", "GER05": "DEFENSOR", "GER06": "DEFENSOR", "GER07": "DEFENSOR", "GER08": "DEFENSOR", "GER09": "DEFENSOR", "GER10": "DEFENSOR", "GER11": "MEIO-CAMPISTA", "GER12": "MEIO-CAMPISTA", "GER13": "ELENCO", "GER14": "MEIO-CAMPISTA", "GER15": "MEIO-CAMPISTA", "GER16": "MEIO-CAMPISTA", "GER17": "ATACANTE", "GER18": "ATACANTE", "GER19": "ATACANTE", "GER20": "ATACANTE", "GHA01": "ESCUDO", "GHA02": "GOLEIRO", "GHA03": "DEFENSOR", "GHA04": "DEFENSOR", "GHA05": "DEFENSOR", "GHA06": "DEFENSOR", "GHA07": "DEFENSOR", "GHA08": "MEIO-CAMPISTA", "GHA09": "MEIO-CAMPISTA", "GHA10": "MEIO-CAMPISTA", "GHA11": "MEIO-CAMPISTA", "GHA12": "ATACANTE", "GHA13": "ELENCO", "GHA14": "ATACANTE", "GHA15": "ATACANTE", "GHA16": "ATACANTE", "GHA17": "ATACANTE", "GHA18": "ATACANTE", "GHA19": "ATACANTE", "GHA20": "ATACANTE", "HAI01": "ESCUDO", "HAI02": "GOLEIRO", "HAI03": "DEFENSOR", "HAI04": "DEFENSOR", "HAI05": "DEFENSOR", "HAI06": "DEFENSOR", "HAI07": "DEFENSOR", "HAI08": "DEFENSOR", "HAI09": "DEFENSOR", "HAI10": "MEIO-CAMPISTA", "HAI11": "MEIO-CAMPISTA", "HAI12": "MEIO-CAMPISTA", "HAI13": "ELENCO", "HAI14": "ATACANTE", "HAI15": "ATACANTE", "HAI16": "ATACANTE", "HAI17": "ATACANTE", "HAI18": "ATACANTE", "HAI19": "ATACANTE", "HAI20": "ATACANTE", "IRN01": "ESCUDO", "IRN02": "GOLEIRO", "IRN03": "DEFENSOR", "IRN04": "DEFENSOR", "IRN05": "DEFENSOR", "IRN06": "DEFENSOR", "IRN07": "DEFENSOR", "IRN08": "DEFENSOR", "IRN09": "DEFENSOR", "IRN10": "DEFENSOR", "IRN11": "MEIO-CAMPISTA", "IRN12": "MEIO-CAMPISTA", "IRN13": "ELENCO", "IRN14": "MEIO-CAMPISTA", "IRN15": "MEIO-CAMPISTA", "IRN16": "MEIO-CAMPISTA", "IRN17": "MEIO-CAMPISTA", "IRN18": "ATACANTE", "IRN19": "ATACANTE", "IRN20": "ATACANTE", "IRQ01": "ESCUDO", "IRQ02": "GOLEIRO", "IRQ03": "DEFENSOR", "IRQ04": "DEFENSOR", "IRQ05": "DEFENSOR", "IRQ06": "DEFENSOR", "IRQ07": "DEFENSOR", "IRQ08": "DEFENSOR", "IRQ09": "MEIO-CAMPISTA", "IRQ10": "MEIO-CAMPISTA", "IRQ11": "MEIO-CAMPISTA", "IRQ12": "ATACANTE", "IRQ13": "ELENCO", "IRQ14": "ATACANTE", "IRQ15": "ATACANTE", "IRQ16": "ATACANTE", "IRQ17": "ATACANTE", "IRQ18": "ATACANTE", "IRQ19": "ATACANTE", "IRQ20": "ATACANTE", "JOR01": "ESCUDO", "JOR02": "GOLEIRO", "JOR03": "DEFENSOR", "JOR04": "DEFENSOR", "JOR05": "DEFENSOR", "JOR06": "DEFENSOR", "JOR07": "DEFENSOR", "JOR08": "DEFENSOR", "JOR09": "MEIO-CAMPISTA", "JOR10": "MEIO-CAMPISTA", "JOR11": "MEIO-CAMPISTA", "JOR12": "MEIO-CAMPISTA", "JOR13": "ELENCO", "JOR14": "MEIO-CAMPISTA", "JOR15": "ATACANTE", "JOR16": "ATACANTE", "JOR17": "ATACANTE", "JOR18": "ATACANTE", "JOR19": "ATACANTE", "JOR20": "ATACANTE", "JPN01": "ESCUDO", "JPN02": "GOLEIRO", "JPN03": "DEFENSOR", "JPN04": "DEFENSOR", "JPN05": "DEFENSOR", "JPN06": "DEFENSOR", "JPN07": "DEFENSOR", "JPN08": "MEIO-CAMPISTA", "JPN09": "MEIO-CAMPISTA", "JPN10": "MEIO-CAMPISTA", "JPN11": "MEIO-CAMPISTA", "JPN12": "MEIO-CAMPISTA", "JPN13": "ELENCO", "JPN14": "MEIO-CAMPISTA", "JPN15": "MEIO-CAMPISTA", "JPN16": "MEIO-CAMPISTA", "JPN17": "ATACANTE", "JPN18": "ATACANTE", "JPN19": "ATACANTE", "JPN20": "ATACANTE", "KOR01": "ESCUDO", "KOR02": "GOLEIRO", "KOR03": "DEFENSOR", "KOR04": "DEFENSOR", "KOR05": "DEFENSOR", "KOR06": "DEFENSOR", "KOR07": "DEFENSOR", "KOR08": "DEFENSOR", "KOR09": "MEIO-CAMPISTA", "KOR10": "MEIO-CAMPISTA", "KOR11": "MEIO-CAMPISTA", "KOR12": "MEIO-CAMPISTA", "KOR13": "ELENCO", "KOR14": "ATACANTE", "KOR15": "ATACANTE", "KOR16": "ATACANTE", "KOR17": "ATACANTE", "KOR18": "ATACANTE", "KOR19": "ATACANTE", "KOR20": "ATACANTE", "KSA01": "ESCUDO", "KSA02": "GOLEIRO", "KSA03": "DEFENSOR", "KSA04": "DEFENSOR", "KSA05": "DEFENSOR", "KSA06": "DEFENSOR", "KSA07": "DEFENSOR", "KSA08": "DEFENSOR", "KSA09": "MEIO-CAMPISTA", "KSA10": "MEIO-CAMPISTA", "KSA11": "MEIO-CAMPISTA", "KSA12": "MEIO-CAMPISTA", "KSA13": "ELENCO", "KSA14": "ATACANTE", "KSA15": "ATACANTE", "KSA16": "ATACANTE", "KSA17": "ATACANTE", "KSA18": "ATACANTE", "KSA19": "ATACANTE", "KSA20": "ATACANTE", "MAR01": "ESCUDO", "MAR02": "GOLEIRO", "MAR03": "GOLEIRO", "MAR04": "DEFENSOR", "MAR05": "DEFENSOR", "MAR06": "DEFENSOR", "MAR07": "DEFENSOR", "MAR08": "DEFENSOR", "MAR09": "MEIO-CAMPISTA", "MAR10": "MEIO-CAMPISTA", "MAR11": "MEIO-CAMPISTA", "MAR12": "MEIO-CAMPISTA", "MAR13": "ELENCO", "MAR14": "MEIO-CAMPISTA", "MAR15": "MEIO-CAMPISTA", "MAR16": "ATACANTE", "MAR17": "ATACANTE", "MAR18": "ATACANTE", "MAR19": "ATACANTE", "MAR20": "ATACANTE", "MEX01": "ESCUDO", "MEX02": "GOLEIRO", "MEX03": "DEFENSOR", "MEX04": "DEFENSOR", "MEX05": "DEFENSOR", "MEX06": "DEFENSOR", "MEX07": "DEFENSOR", "MEX08": "DEFENSOR", "MEX09": "DEFENSOR", "MEX10": "DEFENSOR", "MEX11": "MEIO-CAMPISTA", "MEX12": "MEIO-CAMPISTA", "MEX13": "ELENCO", "MEX14": "ATACANTE", "MEX15": "ATACANTE", "MEX16": "ATACANTE", "MEX17": "ATACANTE", "MEX18": "ATACANTE", "MEX19": "ATACANTE", "MEX20": "ATACANTE", "NED01": "ESCUDO", "NED02": "GOLEIRO", "NED03": "DEFENSOR", "NED04": "DEFENSOR", "NED05": "DEFENSOR", "NED06": "DEFENSOR", "NED07": "DEFENSOR", "NED08": "DEFENSOR", "NED09": "DEFENSOR", "NED10": "MEIO-CAMPISTA", "NED11": "MEIO-CAMPISTA", "NED12": "MEIO-CAMPISTA", "NED13": "ELENCO", "NED14": "MEIO-CAMPISTA", "NED15": "MEIO-CAMPISTA", "NED16": "MEIO-CAMPISTA", "NED17": "ATACANTE", "NED18": "ATACANTE", "NED19": "ATACANTE", "NED20": "ATACANTE", "NOR01": "ESCUDO", "NOR02": "GOLEIRO", "NOR03": "ATACANTE", "NOR04": "ATACANTE", "NOR05": "ATACANTE", "NOR06": "ATACANTE", "NOR07": "ATACANTE", "NOR08": "ATACANTE", "NOR09": "ATACANTE", "NOR10": "ATACANTE", "NOR11": "ATACANTE", "NOR12": "ATACANTE", "NOR13": "ELENCO", "NOR14": "ATACANTE", "NOR15": "ATACANTE", "NOR16": "ATACANTE", "NOR17": "ATACANTE", "NOR18": "ATACANTE", "NOR19": "ATACANTE", "NOR20": "ATACANTE", "NZL01": "ESCUDO", "NZL02": "GOLEIRO", "NZL03": "GOLEIRO", "NZL04": "DEFENSOR", "NZL05": "DEFENSOR", "NZL06": "DEFENSOR", "NZL07": "DEFENSOR", "NZL08": "DEFENSOR", "NZL09": "DEFENSOR", "NZL10": "MEIO-CAMPISTA", "NZL11": "MEIO-CAMPISTA", "NZL12": "MEIO-CAMPISTA", "NZL13": "ELENCO", "NZL14": "MEIO-CAMPISTA", "NZL15": "MEIO-CAMPISTA", "NZL16": "MEIO-CAMPISTA", "NZL17": "ATACANTE", "NZL18": "ATACANTE", "NZL19": "ATACANTE", "NZL20": "ATACANTE", "PAN01": "ESCUDO", "PAN02": "GOLEIRO", "PAN03": "GOLEIRO", "PAN04": "DEFENSOR", "PAN05": "DEFENSOR", "PAN06": "DEFENSOR", "PAN07": "DEFENSOR", "PAN08": "DEFENSOR", "PAN09": "DEFENSOR", "PAN10": "MEIO-CAMPISTA", "PAN11": "MEIO-CAMPISTA", "PAN12": "MEIO-CAMPISTA", "PAN13": "ELENCO", "PAN14": "MEIO-CAMPISTA", "PAN15": "MEIO-CAMPISTA", "PAN16": "MEIO-CAMPISTA", "PAN17": "ATACANTE", "PAN18": "ATACANTE", "PAN19": "ATACANTE", "PAN20": "ATACANTE", "PAR01": "ESCUDO", "PAR02": "GOLEIRO", "PAR03": "GOLEIRO", "PAR04": "DEFENSOR", "PAR05": "DEFENSOR", "PAR06": "DEFENSOR", "PAR07": "DEFENSOR", "PAR08": "DEFENSOR", "PAR09": "MEIO-CAMPISTA", "PAR10": "MEIO-CAMPISTA", "PAR11": "MEIO-CAMPISTA", "PAR12": "MEIO-CAMPISTA", "PAR13": "ELENCO", "PAR14": "MEIO-CAMPISTA", "PAR15": "ATACANTE", "PAR16": "ATACANTE", "PAR17": "ATACANTE", "PAR18": "ATACANTE", "PAR19": "ATACANTE", "PAR20": "ATACANTE", "POR01": "ESCUDO", "POR02": "GOLEIRO", "POR03": "GOLEIRO", "POR04": "DEFENSOR", "POR05": "DEFENSOR", "POR06": "DEFENSOR", "POR07": "DEFENSOR", "POR08": "DEFENSOR", "POR09": "MEIO-CAMPISTA", "POR10": "MEIO-CAMPISTA", "POR11": "MEIO-CAMPISTA", "POR12": "MEIO-CAMPISTA", "POR13": "ELENCO", "POR14": "MEIO-CAMPISTA", "POR15": "ATACANTE", "POR16": "ATACANTE", "POR17": "ATACANTE", "POR18": "ATACANTE", "POR19": "ATACANTE", "POR20": "ATACANTE", "QAT01": "ESCUDO", "QAT02": "GOLEIRO", "QAT03": "DEFENSOR", "QAT04": "DEFENSOR", "QAT05": "DEFENSOR", "QAT06": "DEFENSOR", "QAT07": "DEFENSOR", "QAT08": "DEFENSOR", "QAT09": "MEIO-CAMPISTA", "QAT10": "MEIO-CAMPISTA", "QAT11": "MEIO-CAMPISTA", "QAT12": "MEIO-CAMPISTA", "QAT13": "ELENCO", "QAT14": "MEIO-CAMPISTA", "QAT15": "MEIO-CAMPISTA", "QAT16": "ATACANTE", "QAT17": "ATACANTE", "QAT18": "ATACANTE", "QAT19": "ATACANTE", "QAT20": "ATACANTE", "RSA01": "ESCUDO", "RSA02": "GOLEIRO", "RSA03": "GOLEIRO", "RSA04": "DEFENSOR", "RSA05": "DEFENSOR", "RSA06": "DEFENSOR", "RSA07": "DEFENSOR", "RSA08": "DEFENSOR", "RSA09": "DEFENSOR", "RSA10": "DEFENSOR", "RSA11": "MEIO-CAMPISTA", "RSA12": "MEIO-CAMPISTA", "RSA13": "ELENCO", "RSA14": "ATACANTE", "RSA15": "ATACANTE", "RSA16": "ATACANTE", "RSA17": "ATACANTE", "RSA18": "ATACANTE", "RSA19": "ATACANTE", "RSA20": "ATACANTE", "SCO01": "ESCUDO", "SCO02": "GOLEIRO", "SCO03": "DEFENSOR", "SCO04": "DEFENSOR", "SCO05": "DEFENSOR", "SCO06": "DEFENSOR", "SCO07": "DEFENSOR", "SCO08": "DEFENSOR", "SCO09": "DEFENSOR", "SCO10": "DEFENSOR", "SCO11": "MEIO-CAMPISTA", "SCO12": "MEIO-CAMPISTA", "SCO13": "ELENCO", "SCO14": "MEIO-CAMPISTA", "SCO15": "MEIO-CAMPISTA", "SCO16": "MEIO-CAMPISTA", "SCO17": "MEIO-CAMPISTA", "SCO18": "ATACANTE", "SCO19": "ATACANTE", "SCO20": "ATACANTE", "SEN01": "ESCUDO", "SEN02": "GOLEIRO", "SEN03": "GOLEIRO", "SEN04": "DEFENSOR", "SEN05": "DEFENSOR", "SEN06": "DEFENSOR", "SEN07": "DEFENSOR", "SEN08": "DEFENSOR", "SEN09": "MEIO-CAMPISTA", "SEN10": "MEIO-CAMPISTA", "SEN11": "MEIO-CAMPISTA", "SEN12": "MEIO-CAMPISTA", "SEN13": "ELENCO", "SEN14": "MEIO-CAMPISTA", "SEN15": "ATACANTE", "SEN16": "ATACANTE", "SEN17": "ATACANTE", "SEN18": "ATACANTE", "SEN19": "ATACANTE", "SEN20": "ATACANTE", "SUI01": "ESCUDO", "SUI02": "GOLEIRO", "SUI03": "GOLEIRO", "SUI04": "DEFENSOR", "SUI05": "DEFENSOR", "SUI06": "DEFENSOR", "SUI07": "DEFENSOR", "SUI08": "DEFENSOR", "SUI09": "MEIO-CAMPISTA", "SUI10": "MEIO-CAMPISTA", "SUI11": "MEIO-CAMPISTA", "SUI12": "MEIO-CAMPISTA", "SUI13": "ELENCO", "SUI14": "MEIO-CAMPISTA", "SUI15": "MEIO-CAMPISTA", "SUI16": "MEIO-CAMPISTA", "SUI17": "ATACANTE", "SUI18": "ATACANTE", "SUI19": "ATACANTE", "SUI20": "ATACANTE", "SWE01": "ESCUDO", "SWE02": "GOLEIRO", "SWE03": "DEFENSOR", "SWE04": "DEFENSOR", "SWE05": "DEFENSOR", "SWE06": "DEFENSOR", "SWE07": "DEFENSOR", "SWE08": "MEIO-CAMPISTA", "SWE09": "MEIO-CAMPISTA", "SWE10": "MEIO-CAMPISTA", "SWE11": "MEIO-CAMPISTA", "SWE12": "MEIO-CAMPISTA", "SWE13": "ELENCO", "SWE14": "MEIO-CAMPISTA", "SWE15": "MEIO-CAMPISTA", "SWE16": "ATACANTE", "SWE17": "ATACANTE", "SWE18": "ATACANTE", "SWE19": "ATACANTE", "SWE20": "ATACANTE", "TUN01": "ESCUDO", "TUN02": "GOLEIRO", "TUN03": "GOLEIRO", "TUN04": "DEFENSOR", "TUN05": "DEFENSOR", "TUN06": "DEFENSOR", "TUN07": "DEFENSOR", "TUN08": "DEFENSOR", "TUN09": "MEIO-CAMPISTA", "TUN10": "MEIO-CAMPISTA", "TUN11": "MEIO-CAMPISTA", "TUN12": "MEIO-CAMPISTA", "TUN13": "ELENCO", "TUN14": "MEIO-CAMPISTA", "TUN15": "ATACANTE", "TUN16": "ATACANTE", "TUN17": "ATACANTE", "TUN18": "ATACANTE", "TUN19": "ATACANTE", "TUN20": "ATACANTE", "TUR01": "ESCUDO", "TUR02": "GOLEIRO", "TUR03": "DEFENSOR", "TUR04": "DEFENSOR", "TUR05": "DEFENSOR", "TUR06": "DEFENSOR", "TUR07": "DEFENSOR", "TUR08": "DEFENSOR", "TUR09": "MEIO-CAMPISTA", "TUR10": "MEIO-CAMPISTA", "TUR11": "MEIO-CAMPISTA", "TUR12": "MEIO-CAMPISTA", "TUR13": "ELENCO", "TUR14": "ATACANTE", "TUR15": "ATACANTE", "TUR16": "ATACANTE", "TUR17": "ATACANTE", "TUR18": "ATACANTE", "TUR19": "ATACANTE", "TUR20": "ATACANTE", "URU01": "ESCUDO", "URU02": "GOLEIRO", "URU03": "GOLEIRO", "URU04": "DEFENSOR", "URU05": "DEFENSOR", "URU06": "DEFENSOR", "URU07": "DEFENSOR", "URU08": "DEFENSOR", "URU09": "MEIO-CAMPISTA", "URU10": "MEIO-CAMPISTA", "URU11": "MEIO-CAMPISTA", "URU12": "MEIO-CAMPISTA", "URU13": "ELENCO", "URU14": "MEIO-CAMPISTA", "URU15": "MEIO-CAMPISTA", "URU16": "MEIO-CAMPISTA", "URU17": "ATACANTE", "URU18": "ATACANTE", "URU19": "ATACANTE", "URU20": "ATACANTE", "USA01": "ESCUDO", "USA02": "GOLEIRO", "USA03": "DEFENSOR", "USA04": "DEFENSOR", "USA05": "DEFENSOR", "USA06": "DEFENSOR", "USA07": "DEFENSOR", "USA08": "MEIO-CAMPISTA", "USA09": "MEIO-CAMPISTA", "USA10": "MEIO-CAMPISTA", "USA11": "MEIO-CAMPISTA", "USA12": "ATACANTE", "USA13": "ELENCO", "USA14": "ATACANTE", "USA15": "ATACANTE", "USA16": "ATACANTE", "USA17": "ATACANTE", "USA18": "ATACANTE", "USA19": "ATACANTE", "USA20": "ATACANTE", "UZB01": "ESCUDO", "UZB02": "GOLEIRO", "UZB03": "DEFENSOR", "UZB04": "DEFENSOR", "UZB05": "DEFENSOR", "UZB06": "DEFENSOR", "UZB07": "DEFENSOR", "UZB08": "DEFENSOR", "UZB09": "DEFENSOR", "UZB10": "MEIO-CAMPISTA", "UZB11": "MEIO-CAMPISTA", "UZB12": "MEIO-CAMPISTA", "UZB13": "ELENCO", "UZB14": "MEIO-CAMPISTA", "UZB15": "MEIO-CAMPISTA", "UZB16": "ATACANTE", "UZB17": "ATACANTE", "UZB18": "ATACANTE", "UZB19": "ATACANTE", "UZB20": "ATACANTE"};
 let db = JSON.parse(localStorage.getItem("albumCopaPremiumExternal") || '{"stickers":{},"notes":""}');
 let current = "BRA";
 let previewSticker = null;
 let controlMode = "all";
+let currentUser = null;
+let cloudReady = false;
+let cloudBusy = false;
+let syncTimer = null;
+const cloud = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
 
 function key(c,n){return c+"-"+n}
 function imgPath(c,n){return IMAGE_FOLDER + c + "_" + String(n).padStart(2,"0") + IMAGE_EXT}
@@ -203,7 +237,7 @@ function flagHTML(t,size="small"){
 }
 function get(c,n){return db.stickers[key(c,n)] || {qty:0}}
 function set(c,n,o){db.stickers[key(c,n)]={...get(c,n),...o};save()}
-function save(){localStorage.setItem("albumCopaPremiumExternal",JSON.stringify(db));stats();renderCountries();renderDupes()}
+function save(){localStorage.setItem("albumCopaPremiumExternal",JSON.stringify(db));stats();renderCountries();renderDupes();scheduleCloudSync()}
 function team(code){return GROUPS.find(t=>t.code===code)||GROUPS[0]}
 function owned(c,n){return get(c,n).qty>0}
 function roleFor(s,c){ const override=ROLE_OVERRIDES[(c||current)+String(s.n).padStart(2,"0")]; if(override) return override; if(s.type==="special") return "ESPECIAL"; if(s.type==="badge") return "ESCUDO"; if(s.type==="squad") return "ELENCO"; if(s.n<=2) return "GOLEIRO"; if(s.n<=8) return "DEFENSOR"; if(s.n<=13) return "MEIO-CAMPISTA"; return "ATACANTE"; }
@@ -413,6 +447,7 @@ function openTrades(){
   const el=document.getElementById("tradeList"); let html="";
   GROUPS.forEach(t=>t.slots.forEach(s=>{let q=get(t.code,s.n).qty; if(q>1)html+=`<p><b>${flagHTML(t)} ${t.code} ${String(s.n).padStart(2,"0")} - ${s.name}</b> — ${q-1} repetida(s)</p>`}));
   el.innerHTML=html||"<p>Nenhuma repetida ainda.</p>"; document.getElementById("notes").value=db.notes||""; document.getElementById("notes").oninput=e=>{db.notes=e.target.value;save()}; document.getElementById("tradesModal").classList.add("open");
+  renderCloudTrades();
 }
 function closeTrades(){document.getElementById("tradesModal").classList.remove("open")}
 function openStats(){
@@ -493,6 +528,213 @@ function resetAll(){if(confirm("Apagar todo o álbum?")){db={stickers:{},notes:"
 function showAllCountries(){document.getElementById("search").value="";renderCountries();}
 function openHelp(){document.getElementById("helpModal").classList.add("open")}
 function closeHelp(){document.getElementById("helpModal").classList.remove("open")}
+function codeFor(c,n){return c+String(n).padStart(2,"0")}
+function splitCode(code){
+  const clean=String(code||"").replace(/[^A-Za-z0-9]/g,"").toUpperCase();
+  const c=clean.slice(0,-2), n=parseInt(clean.slice(-2),10);
+  return {c,n};
+}
+function allStickerInfos(){
+  const items=[];
+  GROUPS.forEach(t=>t.slots.forEach(s=>items.push({team:t,slot:s,code:codeFor(t.code,s.n),role:roleFor(s,t.code)})));
+  return items;
+}
+function localStickerRows(){
+  const rows=[];
+  Object.entries(db.stickers||{}).forEach(([k,v])=>{
+    const [c,nText]=k.split("-");
+    const qty=Math.max(0,parseInt(v?.qty||0,10)||0);
+    if(c && nText && qty>0) rows.push({user_id:currentUser.id,code:codeFor(c,parseInt(nText,10)),qty});
+  });
+  return rows;
+}
+function hasLocalProgress(){
+  return Object.values(db.stickers||{}).some(v=>(parseInt(v?.qty||0,10)||0)>0) || !!(db.notes||"").trim();
+}
+function mergeAlbumData(localData,cloudData){
+  const merged={stickers:{...(cloudData?.stickers||{})},notes:(cloudData?.notes||"")};
+  Object.entries(localData?.stickers||{}).forEach(([k,v])=>{
+    const localQty=parseInt(v?.qty||0,10)||0;
+    const cloudQty=parseInt(merged.stickers[k]?.qty||0,10)||0;
+    merged.stickers[k]={...merged.stickers[k],...v,qty:Math.max(localQty,cloudQty)};
+  });
+  if((localData?.notes||"").trim()) merged.notes=localData.notes;
+  return merged;
+}
+function setCloudStatus(text,online=false){
+  ["authStatus","tradeCloudStatus"].forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=text;});
+  ["authCloudDot","tradeCloudDot"].forEach(id=>{const el=document.getElementById(id); if(el) el.className="sync-dot "+(online?"online":"offline");});
+}
+function updateAuthUI(){
+  const btn=document.getElementById("cloudBtn");
+  const name=currentUser?.user_metadata?.display_name || currentUser?.email || "";
+  if(btn) btn.textContent=currentUser ? "☁️ "+name.split("@")[0] : "☁️ Entrar";
+  if(currentUser) setCloudStatus("Conectado: "+(currentUser.email||name),true);
+  else setCloudStatus(cloud ? "Entre na conta para sincronizar e trocar." : "Supabase não carregou. Verifique a internet.",false);
+}
+function openAuth(){updateAuthUI();document.getElementById("authModal").classList.add("open")}
+function closeAuth(){document.getElementById("authModal").classList.remove("open")}
+async function ensureProfile(){
+  if(!cloud || !currentUser) return;
+  const inputName=(document.getElementById("authName")?.value||"").trim();
+  const displayName=inputName || currentUser.user_metadata?.display_name || currentUser.email?.split("@")[0] || "Colecionador";
+  await cloud.from("profiles").upsert({id:currentUser.id,display_name:displayName,updated_at:new Date().toISOString()},{onConflict:"id"});
+}
+async function signUp(){
+  if(!cloud){toast("Supabase não carregou.");return;}
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+  const displayName=document.getElementById("authName").value.trim() || email.split("@")[0];
+  if(!email || !password){toast("Informe e-mail e senha.");return;}
+  const {data,error}=await cloud.auth.signUp({email,password,options:{data:{display_name:displayName}}});
+  if(error){toast(error.message);return;}
+  currentUser=data.user;
+  await ensureProfile();
+  updateAuthUI();
+  await syncNow();
+  toast("Conta criada. Se pedir confirmação, veja o e-mail.");
+}
+async function signIn(){
+  if(!cloud){toast("Supabase não carregou.");return;}
+  const email=document.getElementById("authEmail").value.trim();
+  const password=document.getElementById("authPassword").value;
+  if(!email || !password){toast("Informe e-mail e senha.");return;}
+  const {data,error}=await cloud.auth.signInWithPassword({email,password});
+  if(error){toast(error.message);return;}
+  currentUser=data.user;
+  await ensureProfile();
+  updateAuthUI();
+  await loadFromCloud();
+  toast("Entrou na conta.");
+}
+async function signOut(){
+  if(!cloud) return;
+  await cloud.auth.signOut();
+  currentUser=null;
+  cloudReady=false;
+  updateAuthUI();
+  renderCloudTrades();
+  toast("Saiu da conta. O álbum local continua salvo.");
+}
+function scheduleCloudSync(){
+  if(!cloudReady || !currentUser || cloudBusy) return;
+  clearTimeout(syncTimer);
+  syncTimer=setTimeout(()=>syncToCloud(false),900);
+}
+async function syncToCloud(showToast=true){
+  if(!cloud || !currentUser) return;
+  cloudBusy=true;
+  try{
+    await ensureProfile();
+    const payload={stickers:db.stickers||{},notes:db.notes||""};
+    let result=await cloud.from("albums").upsert({user_id:currentUser.id,data:payload,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+    if(result.error) throw result.error;
+    result=await cloud.from("user_stickers").delete().eq("user_id",currentUser.id);
+    if(result.error) throw result.error;
+    const rows=localStickerRows();
+    if(rows.length){
+      result=await cloud.from("user_stickers").insert(rows);
+      if(result.error) throw result.error;
+    }
+    cloudReady=true;
+    updateAuthUI();
+    if(document.getElementById("tradesModal").classList.contains("open")) renderCloudTrades();
+    if(showToast) toast("Sincronizado com a nuvem.");
+  }catch(err){
+    console.error(err);
+    setCloudStatus("Erro ao sincronizar: "+(err.message||err),false);
+    if(showToast) toast("Erro ao sincronizar.");
+  }finally{cloudBusy=false;}
+}
+async function loadFromCloud(){
+  if(!cloud || !currentUser) return;
+  try{
+    const {data,error}=await cloud.from("albums").select("data").eq("user_id",currentUser.id).maybeSingle();
+    if(error) throw error;
+    if(data?.data){
+      db=mergeAlbumData(db,data.data);
+      localStorage.setItem("albumCopaPremiumExternal",JSON.stringify(db));
+      stats();renderCountries();renderDupes();renderAlbum();
+    }else if(hasLocalProgress()){
+      await syncToCloud(false);
+    }
+    cloudReady=true;
+    await syncToCloud(false);
+    updateAuthUI();
+  }catch(err){
+    console.error(err);
+    setCloudStatus("Não foi possível carregar a nuvem: "+(err.message||err),false);
+  }
+}
+async function syncNow(){
+  if(!currentUser){openAuth();toast("Entre na conta primeiro.");return;}
+  await syncToCloud(true);
+}
+async function initSupabase(){
+  if(!cloud){updateAuthUI();return;}
+  const {data}=await cloud.auth.getSession();
+  currentUser=data.session?.user||null;
+  updateAuthUI();
+  if(currentUser) await loadFromCloud();
+  cloud.auth.onAuthStateChange(async (_event,session)=>{
+    currentUser=session?.user||null;
+    updateAuthUI();
+    if(currentUser) await loadFromCloud();
+  });
+}
+function stickerLabel(code){
+  const {c,n}=splitCode(code);
+  const t=team(c), s=t.slots.find(x=>x.n===n);
+  return s ? `${code} - ${s.name}` : code;
+}
+function buildTradeMaps(rows){
+  const byUser={};
+  rows.forEach(r=>{
+    if(!byUser[r.user_id]) byUser[r.user_id]={};
+    byUser[r.user_id][r.code]=r.qty;
+  });
+  return byUser;
+}
+async function renderCloudTrades(){
+  const box=document.getElementById("cloudTrades");
+  if(!box) return;
+  if(!currentUser){box.innerHTML='<p class="muted">Entre na conta para ver quem tem suas faltantes e quem precisa das suas repetidas.</p>';updateAuthUI();return;}
+  box.innerHTML='<p class="muted">Carregando comparação de trocas...</p>';
+  try{
+    const [{data:profiles,error:pErr},{data:rows,error:sErr}]=await Promise.all([
+      cloud.from("profiles").select("id,display_name"),
+      cloud.from("user_stickers").select("user_id,code,qty")
+    ]);
+    if(pErr) throw pErr;
+    if(sErr) throw sErr;
+    const names={};
+    (profiles||[]).forEach(p=>names[p.id]=p.display_name||"Colecionador");
+    const byUser=buildTradeMaps(rows||[]);
+    const myMissing=allStickerInfos().filter(i=>!owned(i.team.code,i.slot.n)).map(i=>i.code);
+    const myDupes=allStickerInfos().filter(i=>get(i.team.code,i.slot.n).qty>1).map(i=>i.code);
+    const canHelp=[], needMine=[];
+    Object.entries(byUser).forEach(([userId,map])=>{
+      if(userId===currentUser.id) return;
+      const helps=myMissing.filter(code=>(map[code]||0)>1).slice(0,16);
+      const wants=myDupes.filter(code=>(map[code]||0)===0).slice(0,16);
+      if(helps.length) canHelp.push({userId,codes:helps});
+      if(wants.length) needMine.push({userId,codes:wants});
+    });
+    const renderList=(title,list,empty)=>`<div class="trade-box"><h3>${title}</h3>${list.length?list.map(item=>`<div class="trade-user"><b>${names[item.userId]||"Colecionador"}</b>${item.codes.map(c=>`<span class="trade-code" title="${stickerLabel(c)}">${c}</span>`).join("")}<div class="trade-actions"><button class="gray" onclick="copyTradeMessage('${item.userId}','${item.codes.join(",")}')">Copiar mensagem</button></div></div>`).join(""):`<p class="muted">${empty}</p>`}</div>`;
+    box.innerHTML=`<div class="trade-columns">${renderList("Podem te ajudar",canHelp,"Ainda não há repetidas de outros usuários para suas faltantes.")}${renderList("Precisam das suas repetidas",needMine,"Ainda não há pedidos possíveis com suas repetidas.")}</div>`;
+    setCloudStatus("Trocas comparadas com usuários sincronizados.",true);
+  }catch(err){
+    console.error(err);
+    box.innerHTML='<p class="muted">Não foi possível carregar as trocas. Confira se o SQL do Supabase foi executado.</p>';
+    setCloudStatus("Erro ao carregar trocas: "+(err.message||err),false);
+  }
+}
+function copyTradeMessage(userId,codesText){
+  const codes=codesText.split(",").filter(Boolean);
+  const msg=`Oi! Vi no álbum que podemos trocar. Figurinhas: ${codes.map(stickerLabel).join("; ")}.`;
+  navigator.clipboard?.writeText(msg);
+  toast("Mensagem copiada.");
+}
 function download(name,content){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type:"application/octet-stream"}));a.download=name;a.click();}
 function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2200);}
 let installPrompt=null;
@@ -515,6 +757,7 @@ if("serviceWorker" in navigator && location.protocol !== "file:"){
 window.addEventListener("online",()=>toast("Online novamente."));
 window.addEventListener("offline",()=>toast("Modo offline ativo."));
 renderCountries(); renderAlbum(); renderDupes();
+initSupabase();
 </script>
 </body>
 </html>
