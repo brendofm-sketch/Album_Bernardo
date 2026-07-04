@@ -1,0 +1,23 @@
+# Arquivos pesados usados apenas para extracao/local
+*.pdf
+pdf_101_recortes/
+pdf_101_samples/
+pdf_crops_test/
+pdf_page_samples/
+pdf_recortes/
+auditoria_figurinhas/
+referencias/
+__pycache__/
+
+# Relatorios e arquivos auxiliares locais
+pdf_101_recortes_manifest.csv
+pdf_recortes_manifest.csv
+figurinhas_sem_imagem_pdf.txt
+figurinhas/*.png
+figurinhas/prompts_manifest.json
+Controle de figurinhas.png
+ChatGPT Image *.png
+
+# Sistema/editor
+.DS_Store
+Thumbs.db
