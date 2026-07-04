@@ -9,6 +9,7 @@ auditoria_figurinhas/
 referencias/
 __pycache__/
 node_modules/
+supabase/.temp/
 Obsoleto/
 
 # Relatorios e arquivos auxiliares locais
