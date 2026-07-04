@@ -565,6 +565,16 @@ function setCloudStatus(text,online=false){
   ["authStatus","tradeCloudStatus"].forEach(id=>{const el=document.getElementById(id); if(el) el.textContent=text;});
   ["authCloudDot","tradeCloudDot"].forEach(id=>{const el=document.getElementById(id); if(el) el.className="sync-dot "+(online?"online":"offline");});
 }
+function cloudErrorMessage(err){
+  const msg=String(err?.message||err||"");
+  if(msg.includes("schema cache") || msg.includes("Could not find the table")){
+    return "Banco ainda não preparado. Rode o arquivo supabase/schema.sql no SQL Editor do Supabase e depois clique em Sincronizar agora.";
+  }
+  if(msg.includes("row-level security") || msg.includes("violates row-level security")){
+    return "As regras RLS do Supabase não estão completas. Rode novamente o arquivo supabase/schema.sql.";
+  }
+  return msg || "Erro desconhecido no Supabase.";
+}
 function updateAuthUI(){
   const btn=document.getElementById("cloudBtn");
   const name=currentUser?.user_metadata?.display_name || currentUser?.email || "";
@@ -642,7 +652,7 @@ async function syncToCloud(showToast=true){
     if(showToast) toast("Sincronizado com a nuvem.");
   }catch(err){
     console.error(err);
-    setCloudStatus("Erro ao sincronizar: "+(err.message||err),false);
+    setCloudStatus("Erro ao sincronizar: "+cloudErrorMessage(err),false);
     if(showToast) toast("Erro ao sincronizar.");
   }finally{cloudBusy=false;}
 }
@@ -663,7 +673,7 @@ async function loadFromCloud(){
     updateAuthUI();
   }catch(err){
     console.error(err);
-    setCloudStatus("Não foi possível carregar a nuvem: "+(err.message||err),false);
+    setCloudStatus("Não foi possível carregar a nuvem: "+cloudErrorMessage(err),false);
   }
 }
 async function syncNow(){
@@ -726,7 +736,7 @@ async function renderCloudTrades(){
   }catch(err){
     console.error(err);
     box.innerHTML='<p class="muted">Não foi possível carregar as trocas. Confira se o SQL do Supabase foi executado.</p>';
-    setCloudStatus("Erro ao carregar trocas: "+(err.message||err),false);
+    setCloudStatus("Erro ao carregar trocas: "+cloudErrorMessage(err),false);
   }
 }
 function copyTradeMessage(userId,codesText){
