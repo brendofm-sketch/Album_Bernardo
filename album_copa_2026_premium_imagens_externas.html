@@ -138,10 +138,13 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
     <label>Nome no álbum<input id="authName" autocomplete="name" placeholder="Ex: Bernardo"></label>
     <label>E-mail<input id="authEmail" type="email" autocomplete="email" placeholder="email@exemplo.com"></label>
     <label>Senha<input id="authPassword" type="password" autocomplete="current-password" placeholder="Mínimo 6 caracteres"></label>
+    <label id="newPasswordBox" style="display:none">Nova senha<input id="newPassword" type="password" autocomplete="new-password" placeholder="Nova senha"></label>
   </div>
   <div class="cloud-actions">
     <button class="green" onclick="signIn()">Entrar</button>
     <button onclick="signUp()">Criar conta</button>
+    <button class="gray" onclick="sendPasswordReset()">Esqueci minha senha</button>
+    <button id="updatePasswordBtn" class="yellow" style="display:none" onclick="updatePassword()">Salvar nova senha</button>
     <button class="auth-pill" onclick="syncNow()">Sincronizar agora</button>
     <button class="gray" onclick="signOut()">Sair</button>
   </div>
@@ -225,6 +228,7 @@ let currentUser = null;
 let cloudReady = false;
 let cloudBusy = false;
 let syncTimer = null;
+let passwordRecoveryMode = false;
 const cloud = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
 
 function key(c,n){return c+"-"+n}
@@ -579,7 +583,10 @@ function updateAuthUI(){
   const btn=document.getElementById("cloudBtn");
   const name=currentUser?.user_metadata?.display_name || currentUser?.email || "";
   if(btn) btn.textContent=currentUser ? "☁️ "+name.split("@")[0] : "☁️ Entrar";
-  if(currentUser) setCloudStatus("Conectado: "+(currentUser.email||name),true);
+  document.getElementById("newPasswordBox")?.style && (document.getElementById("newPasswordBox").style.display=passwordRecoveryMode?"block":"none");
+  document.getElementById("updatePasswordBtn")?.style && (document.getElementById("updatePasswordBtn").style.display=passwordRecoveryMode?"inline-flex":"none");
+  if(passwordRecoveryMode) setCloudStatus("Digite uma nova senha e clique em Salvar nova senha.",true);
+  else if(currentUser) setCloudStatus("Conectado: "+(currentUser.email||name),true);
   else setCloudStatus(cloud ? "Entre na conta para sincronizar e trocar." : "Supabase não carregou. Verifique a internet.",false);
 }
 function openAuth(){updateAuthUI();document.getElementById("authModal").classList.add("open")}
@@ -623,6 +630,32 @@ async function signIn(){
   updateAuthUI();
   await loadFromCloud();
   toast("Entrou na conta.");
+}
+function authRedirectUrl(){
+  return location.href.split("#")[0].split("?")[0];
+}
+async function sendPasswordReset(){
+  if(!cloud){toast("Supabase não carregou.");return;}
+  const email=document.getElementById("authEmail").value.trim();
+  if(!email){toast("Informe o e-mail para recuperar a senha.");return;}
+  const {error}=await cloud.auth.resetPasswordForEmail(email,{redirectTo:authRedirectUrl()});
+  if(error){toast(error.message);return;}
+  setCloudStatus("E-mail de recuperação enviado. Abra o link no tablet ou computador e defina a nova senha.",true);
+  toast("E-mail de recuperação enviado.");
+}
+async function updatePassword(){
+  if(!cloud){toast("Supabase não carregou.");return;}
+  const password=document.getElementById("newPassword").value;
+  if(!password || password.length<6){toast("Informe uma nova senha com pelo menos 6 caracteres.");return;}
+  const {data}=await cloud.auth.getSession();
+  if(!data.session){toast("Abra este app pelo link recebido no e-mail para trocar a senha.");return;}
+  const {error}=await cloud.auth.updateUser({password});
+  if(error){toast(error.message);return;}
+  passwordRecoveryMode=false;
+  document.getElementById("newPassword").value="";
+  updateAuthUI();
+  setCloudStatus("Senha atualizada. Você já pode entrar normalmente.",true);
+  toast("Senha atualizada.");
 }
 async function signOut(){
   if(!cloud) return;
@@ -693,12 +726,22 @@ async function syncNow(){
 }
 async function initSupabase(){
   if(!cloud){updateAuthUI();return;}
+  if(location.hash.includes("type=recovery") || location.search.includes("type=recovery")){
+    passwordRecoveryMode=true;
+    openAuth();
+    setCloudStatus("Digite uma nova senha e clique em Salvar nova senha.",true);
+  }
   const {data}=await cloud.auth.getSession();
   currentUser=data.session?.user||null;
   updateAuthUI();
   if(currentUser) await loadFromCloud();
   cloud.auth.onAuthStateChange(async (_event,session)=>{
     currentUser=session?.user||null;
+    if(_event==="PASSWORD_RECOVERY"){
+      passwordRecoveryMode=true;
+      openAuth();
+      setCloudStatus("Digite uma nova senha e clique em Salvar nova senha.",true);
+    }
     updateAuthUI();
     if(currentUser) await loadFromCloud();
   });

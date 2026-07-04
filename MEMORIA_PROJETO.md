@@ -35,6 +35,8 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Para preparar o banco, rodar `supabase/schema.sql` no SQL Editor.
 - Tabelas previstas: `profiles`, `albums`, `user_stickers`, `trade_offers`.
 - O app compara trocas lendo `user_stickers` de usuarios autenticados: quem tem repetida de uma faltante sua e quem precisa de uma repetida sua.
+- Recuperacao de senha fica no modal `Conta e sincronizacao`, usando `resetPasswordForEmail` e `updateUser`.
+- Ao publicar, cadastrar nas Redirect URLs do Supabase: `https://brendofm-sketch.github.io/Album_Bernardo/` e o HTML principal.
 
 ## GitHub Pages
 

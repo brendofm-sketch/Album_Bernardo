@@ -84,6 +84,13 @@ A chave usada no HTML e a publishable key. Nao coloque `service_role` ou secret 
 
 O app continua local-first: salva no `localStorage`, funciona offline, e quando entra na conta sincroniza com o Supabase mesclando as quantidades maiores de cada figurinha.
 
+Para recuperacao de senha, cadastre a URL publicada do album em `Authentication` > `URL Configuration` > `Redirect URLs`:
+
+```text
+https://brendofm-sketch.github.io/Album_Bernardo/
+https://brendofm-sketch.github.io/Album_Bernardo/album_copa_2026_premium_imagens_externas.html
+```
+
 ## Obsoleto
 
 A pasta `Obsoleto/` guarda PDFs, recortes, backups, referencias, auditorias e scripts antigos. Ela fica fora do GitHub pelo `.gitignore`.
