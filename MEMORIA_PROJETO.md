@@ -44,6 +44,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Importacao/exportacao preferida no tablet: codigo de transferencia copiavel no perfil. JSON continua como backup tecnico em Trocas.
 - Painel lateral de paises: manter alternador entre lista detalhada e grade compacta so com bandeiras; o modo fica salvo em `albumCountryViewMode`.
 - Repetidas: o comando `clearDuplicatesOnly()` deve reduzir quantidades maiores que 1 para 1, preservando as figurinhas marcadas como tenho.
+- A faixa de acoes abaixo do album deve ter somente comandos do pais aberto: marcar todos como tenho, remover todos e retirar repetidas daquele pais.
 - Login: a tela de conta deve usar apenas `usuario ou e-mail` + senha para entrar; para criar conta, usar usuario, e-mail e senha. O botao de sincronizar fica somente nas configuracoes do usuario.
 - Criacao de conta: se o Supabase criar usuario sem sessao imediata, preencher o login com o e-mail e permitir entrada pelo e-mail mesmo que o perfil/username ainda nao exista.
 - Autenticacao por e-mail: manter confirmacao de e-mail desligada no Supabase para cadastro entrar direto e nao consumir envio de e-mail no signup. O limite do provedor padrao do Supabase pode afetar o projeto inteiro; recuperacao de senha ainda depende de envio de e-mail.
