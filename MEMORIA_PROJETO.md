@@ -39,6 +39,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Ao publicar, cadastrar nas Redirect URLs do Supabase: `https://brendofm-sketch.github.io/Album_Bernardo/` e o HTML principal.
 - Aba `Amigos`: usa `profiles.email`, `profiles.last_seen`, `friendships` e `messages`; perfil do amigo cruza repetidas/faltantes entre os dois usuarios.
 - Aba `Amigos`: manter a lista de amigos aceitos separada da aba `Solicitações`; ao aceitar pedido, confirmar o registro retornado pelo Supabase, mover para Amigos e abrir o perfil para mensagens/trocas.
+- Perfil do amigo: mostrar um painel recolhivel com o album completo do amigo, usando `user_stickers` para indicar tenho/falta e quantidade de repetidas por figurinha.
 - Perfil/configuracoes: usa `profiles.username`, `profiles.username_search` e `profiles.avatar_id`; `username` preserva maiusculas/minusculas como digitado, `username_search` faz busca/unicidade sem diferenciar caixa. O nome exibido deve ser igual ao username.
 - Topo simplificado: manter `Album`, `Trocas`, `Amigos`, `Estatisticas`, `Controle`; evitar duplicar `Paises`/`Repetidas`.
 - Importacao/exportacao preferida no tablet: codigo de transferencia copiavel no perfil. JSON continua como backup tecnico em Trocas.
