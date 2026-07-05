@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Álbum Copa 2026 - Premium com Imagens Externas</title>
-<meta name="app-build" content="album-amigo-v29">
+<meta name="app-build" content="amizade-refresh-v30">
 <style>
 :root{
   --nav:#061829;--nav2:#0b2a4a;--blue:#075bd8;--green:#16a34a;--red:#df2336;--yellow:#ffd32a;
@@ -291,6 +291,7 @@ let passwordRecoveryMode = false;
 let selectedFriendId = null;
 let friendsCache = [];
 let friendsPanelMode = "friends";
+let friendsRefreshTimer = null;
 let presenceTimer = null;
 let profileSettingsReady = true;
 const cloud = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY) : null;
@@ -1159,7 +1160,19 @@ function startPresence(){
   updatePresence();
   presenceTimer=setInterval(updatePresence,60000);
 }
-function closeFriends(){document.getElementById("friendsModal").classList.remove("open")}
+function closeFriends(){
+  document.getElementById("friendsModal").classList.remove("open");
+  clearInterval(friendsRefreshTimer);
+  friendsRefreshTimer=null;
+}
+function startFriendsRefresh(){
+  clearInterval(friendsRefreshTimer);
+  if(!currentUser) return;
+  friendsRefreshTimer=setInterval(()=>{
+    const modal=document.getElementById("friendsModal");
+    if(modal?.classList.contains("open")) renderFriends(true);
+  },15000);
+}
 function setFriendsPanel(panel){
   friendsPanelMode = panel==="requests" ? "requests" : "friends";
   document.getElementById("friendsTabList")?.classList.toggle("active",friendsPanelMode==="friends");
@@ -1170,6 +1183,8 @@ function setFriendsPanel(panel){
 async function openFriends(){
   document.getElementById("friendsModal").classList.add("open");
   if(!currentUser){
+    clearInterval(friendsRefreshTimer);
+    friendsRefreshTimer=null;
     setFriendsStatus("Entre na conta para usar amigos.",false);
     document.getElementById("friendsList").innerHTML='<div class="empty-state">Use o botão Nuvem para entrar.</div>';
     document.getElementById("friendRequests").innerHTML='<div class="empty-state">Entre na conta para ver solicitações.</div>';
@@ -1180,6 +1195,7 @@ async function openFriends(){
   await ensureProfile();
   setFriendsPanel(friendsPanelMode);
   await renderFriends();
+  startFriendsRefresh();
 }
 async function addFriendByUsername(){
   if(!currentUser){openAuth();toast("Entre na conta primeiro.");return;}
@@ -1189,9 +1205,37 @@ async function addFriendByUsername(){
   if(pErr){toast(cloudErrorMessage(pErr));return;}
   if(!profile){toast("Amigo não encontrado. Peça para ele criar um nome de usuário em Perfil.");return;}
   if(profile.id===currentUser.id){toast("Esse é o seu próprio usuário.");return;}
-  const {data:existing}=await cloud.from("friendships").select("id,status").or(`and(requester.eq.${currentUser.id},addressee.eq.${profile.id}),and(requester.eq.${profile.id},addressee.eq.${currentUser.id})`).maybeSingle();
-  if(existing){toast(existing.status==="accepted"?"Vocês já são amigos.":"Pedido já enviado.");return;}
-  const {error}=await cloud.from("friendships").insert({requester:currentUser.id,addressee:profile.id,status:"pending"});
+  const {data:existing,error:eErr}=await cloud.from("friendships").select("id,requester,addressee,status").or(`and(requester.eq.${currentUser.id},addressee.eq.${profile.id}),and(requester.eq.${profile.id},addressee.eq.${currentUser.id})`).maybeSingle();
+  if(eErr){toast(cloudErrorMessage(eErr));return;}
+  if(existing?.status==="accepted"){toast("Vocês já são amigos.");return;}
+  if(existing?.status==="blocked"){toast("Não é possível enviar pedido para este usuário agora.");return;}
+  if(existing?.status==="pending"){
+    if(existing.addressee===currentUser.id){
+      await setFriendshipStatus(existing.id,"accepted");
+      return;
+    }
+    toast("Pedido já enviado. Ele aparece na aba Solicitações.");
+    setFriendsPanel("requests");
+    await renderFriends();
+    return;
+  }
+  let error=null;
+  if(existing?.status==="declined"){
+    const result=await cloud.from("friendships")
+      .update({requester:currentUser.id,addressee:profile.id,status:"pending",updated_at:new Date().toISOString()})
+      .eq("id",existing.id)
+      .select("id")
+      .maybeSingle();
+    error=result.error;
+    if(!error && !result.data){toast("Não consegui reenviar o pedido. Tente novamente.");return;}
+  }else{
+    const result=await cloud.from("friendships")
+      .insert({requester:currentUser.id,addressee:profile.id,status:"pending"})
+      .select("id")
+      .maybeSingle();
+    error=result.error;
+    if(!error && !result.data){toast("Não consegui salvar o pedido. Tente novamente.");return;}
+  }
   if(error){toast(cloudErrorMessage(error));return;}
   document.getElementById("friendUsername").value="";
   toast("Pedido de amizade enviado.");
@@ -1228,9 +1272,9 @@ async function removeFriendship(id){
   document.getElementById("friendProfile").innerHTML='<div class="empty-state">Selecione um amigo para ver perfil, mensagens e trocas possíveis.</div>';
   renderFriends();
 }
-async function renderFriends(){
+async function renderFriends(silent=false){
   if(!currentUser) return;
-  setFriendsStatus("Carregando amigos...",true);
+  if(!silent) setFriendsStatus("Carregando amigos...",true);
   const {data:rows,error}=await cloud.from("friendships").select("*").or(`requester.eq.${currentUser.id},addressee.eq.${currentUser.id}`).order("updated_at",{ascending:false});
   if(error){setFriendsStatus("Erro ao carregar amigos: "+cloudErrorMessage(error),false);return;}
   const ids=[...new Set((rows||[]).flatMap(r=>[r.requester,r.addressee]).filter(id=>id&&id!==currentUser.id))];
