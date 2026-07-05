@@ -45,6 +45,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Repetidas: o comando `clearDuplicatesOnly()` deve reduzir quantidades maiores que 1 para 1, preservando as figurinhas marcadas como tenho.
 - Login: a tela de conta deve usar apenas `usuario ou e-mail` + senha para entrar; para criar conta, usar usuario, e-mail e senha. O botao de sincronizar fica somente nas configuracoes do usuario.
 - Criacao de conta: se o Supabase criar usuario sem sessao imediata, preencher o login com o e-mail e permitir entrada pelo e-mail mesmo que o perfil/username ainda nao exista.
+- Autenticacao por e-mail: manter confirmacao de e-mail desligada no Supabase para cadastro entrar direto e nao consumir envio de e-mail no signup. O limite do provedor padrao do Supabase pode afetar o projeto inteiro; recuperacao de senha ainda depende de envio de e-mail.
 - Textos de login: manter a tela curta e sem explicacoes tecnicas sobre Supabase/sincronizacao; traduzir erros tecnicos para mensagens simples.
 - Fundos de paises: imagens ativas ficam em `Fundo/COD.webp` e sao aplicadas por `ALBUM_BACKGROUNDS` como camada translucida sobre o papel do album. PNGs originais ficam em `Obsoleto/Fundo_originais/`.
 - Fundo geral: paises com imagem em `ALBUM_BACKGROUNDS` tambem aplicam `Fundo/COD.webp` no fundo do site; a barra direita pode ser recolhida e o estado fica em `albumRightbarCollapsed`.

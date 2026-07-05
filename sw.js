@@ -1,4 +1,4 @@
-const CACHE_NAME = "album-copa-2026-tablet-v25-corrige-criar-conta";
+const CACHE_NAME = "album-copa-2026-tablet-v26-limite-email";
 const CORE_ASSETS = [
   "./",
   "./index.html",
