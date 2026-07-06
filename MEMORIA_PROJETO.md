@@ -19,6 +19,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 
 - Nao trocar imagens ja corrigidas pelo usuario, especialmente FWC e CC, sem pedido explicito.
 - O padrao de imagem e sempre `figurinhas/COD_00.webp`, por exemplo `BRA_01.webp`, `FWC_12.webp`, `CC_04.webp`.
+- PNGs corrigidos dentro de `figurinhas/` devem ser convertidos para WebP com o mesmo nome base e depois arquivados em `Obsoleto/figurinhas_png_convertidos_*`.
 - Antes de mexer em HTML importante, criar backup local `backup_album_copa_2026_premium_imagens_externas_YYYYMMDD_HHMMSS.html`.
 - Alteracoes de runtime devem ficar no HTML, imagens, bandeiras, manifest ou service worker.
 - Ao mudar comportamento visual/cache, atualizar `CACHE_NAME` em `sw.js` quando fizer sentido.
