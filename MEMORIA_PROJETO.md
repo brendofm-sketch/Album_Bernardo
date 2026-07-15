@@ -23,7 +23,7 @@ Aplicacao estatica/PWA para Bernardo controlar o album fisico da Copa 2026 no ta
 - Antes de mexer em HTML importante, criar backup local `backup_album_copa_2026_premium_imagens_externas_YYYYMMDD_HHMMSS.html`.
 - Alteracoes de runtime devem ficar no HTML, imagens, bandeiras, manifest ou service worker.
 - Ao mudar comportamento visual/cache, atualizar `CACHE_NAME` em `sw.js` quando fizer sentido.
-- O progresso do album fica primeiro no `localStorage` do navegador. A versao `supabase-dev` sincroniza com Supabase depois de login, mesclando as maiores quantidades por figurinha.
+- O progresso do album fica primeiro no `localStorage` do navegador. A sincronizacao com Supabase usa a data da ultima alteracao e substitui o estado completo pela versao mais recente, preservando tambem remocoes e reducoes de quantidade.
 - Nunca colocar `service_role` ou secret key no HTML. Somente publishable key e RLS.
 
 ## Supabase

@@ -1,4 +1,4 @@
-const CACHE_NAME = "album-copa-2026-tablet-v34-apk-mobile";
+const CACHE_NAME = "album-copa-2026-tablet-v35-sync-fix";
 const CORE_ASSETS = [
   "./",
   "./index.html",

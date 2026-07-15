@@ -287,7 +287,11 @@ let rightbarCollapsed = localStorage.getItem("albumRightbarCollapsed") === "1";
 let currentUser = null;
 let cloudReady = false;
 let cloudBusy = false;
+let syncPending = false;
 let syncTimer = null;
+let cloudLoadPromise = null;
+let cloudLoadUserId = null;
+let loadedCloudUserId = null;
 let passwordRecoveryMode = false;
 let selectedFriendId = null;
 let friendsCache = [];
@@ -318,7 +322,9 @@ function flagHTML(t,size="small"){
 }
 function get(c,n){return db.stickers[key(c,n)] || {qty:0}}
 function set(c,n,o){db.stickers[key(c,n)]={...get(c,n),...o};save()}
-function save(){localStorage.setItem("albumCopaPremiumExternal",JSON.stringify(db));stats();renderCountries();renderDupes();scheduleCloudSync()}
+function persistLocalAlbum(){localStorage.setItem("albumCopaPremiumExternal",JSON.stringify(db))}
+function albumTimestamp(data){const value=Date.parse(data?.updatedAt||"");return Number.isFinite(value)?value:0}
+function save(){db.updatedAt=new Date().toISOString();persistLocalAlbum();stats();renderCountries();renderDupes();scheduleCloudSync()}
 function team(code){return GROUPS.find(t=>t.code===code)||GROUPS[0]}
 function owned(c,n){return get(c,n).qty>0}
 function roleFor(s,c){ const override=ROLE_OVERRIDES[(c||current)+String(s.n).padStart(2,"0")]; if(override) return override; if(s.type==="special") return "ESPECIAL"; if(s.type==="badge") return "ESCUDO"; if(s.type==="squad") return "ELENCO"; if(s.n<=2) return "GOLEIRO"; if(s.n<=8) return "DEFENSOR"; if(s.n<=13) return "MEIO-CAMPISTA"; return "ATACANTE"; }
@@ -719,12 +725,12 @@ function allStickerInfos(){
   GROUPS.forEach(t=>t.slots.forEach(s=>items.push({team:t,slot:s,code:codeFor(t.code,s.n),role:roleFor(s,t.code)})));
   return items;
 }
-function localStickerRows(){
+function localStickerRows(stickers=db.stickers,userId=currentUser?.id){
   const rows=[];
-  Object.entries(db.stickers||{}).forEach(([k,v])=>{
+  Object.entries(stickers||{}).forEach(([k,v])=>{
     const [c,nText]=k.split("-");
     const qty=Math.max(0,parseInt(v?.qty||0,10)||0);
-    if(c && nText && qty>0) rows.push({user_id:currentUser.id,code:codeFor(c,parseInt(nText,10)),qty});
+    if(c && nText && qty>0 && userId) rows.push({user_id:userId,code:codeFor(c,parseInt(nText,10)),qty});
   });
   return rows;
 }
@@ -896,6 +902,8 @@ async function signOut(){
   await cloud.auth.signOut();
   currentUser=null;
   cloudReady=false;
+  loadedCloudUserId=null;
+  syncPending=false;
   clearInterval(presenceTimer);
   updateAuthUI();
   renderCloudTrades();
@@ -904,21 +912,27 @@ async function signOut(){
   toast("Saiu da conta. O álbum local continua salvo.");
 }
 function scheduleCloudSync(){
-  if(!cloudReady || !currentUser || cloudBusy) return;
+  if(!cloudReady || !currentUser) return;
+  if(cloudBusy){syncPending=true;return;}
   clearTimeout(syncTimer);
   syncTimer=setTimeout(()=>syncToCloud(false),900);
 }
 async function syncToCloud(showToast=true){
-  if(!cloud || !currentUser) return;
+  if(!cloud || !currentUser) return false;
+  if(cloudBusy){syncPending=true;return false;}
+  const userId=currentUser.id;
+  if(!albumTimestamp(db)){db.updatedAt=new Date().toISOString();persistLocalAlbum();}
+  const payload=JSON.parse(JSON.stringify({stickers:db.stickers||{},notes:db.notes||"",updatedAt:db.updatedAt}));
   cloudBusy=true;
+  syncPending=false;
+  let success=false;
   try{
     await ensureProfile();
-    const payload={stickers:db.stickers||{},notes:db.notes||""};
-    let result=await cloud.from("albums").upsert({user_id:currentUser.id,data:payload,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+    let result=await cloud.from("albums").upsert({user_id:userId,data:payload,updated_at:payload.updatedAt},{onConflict:"user_id"});
     if(result.error) throw result.error;
-    result=await cloud.from("user_stickers").delete().eq("user_id",currentUser.id);
+    result=await cloud.from("user_stickers").delete().eq("user_id",userId);
     if(result.error) throw result.error;
-    const rows=localStickerRows();
+    const rows=localStickerRows(payload.stickers,userId);
     if(rows.length){
       result=await cloud.from("user_stickers").insert(rows);
       if(result.error) throw result.error;
@@ -928,30 +942,65 @@ async function syncToCloud(showToast=true){
     if(document.getElementById("tradesModal").classList.contains("open")) renderCloudTrades();
     if(document.getElementById("friendsModal").classList.contains("open") && selectedFriendId) openFriendProfile(selectedFriendId);
     if(showToast) toast("Sincronizado com a nuvem.");
+    success=true;
   }catch(err){
     console.error(err);
     setCloudStatus("Erro ao sincronizar: "+cloudErrorMessage(err),false);
     if(showToast) toast("Erro ao sincronizar.");
-  }finally{cloudBusy=false;}
+  }finally{
+    cloudBusy=false;
+    if(currentUser?.id===userId && (syncPending || db.updatedAt!==payload.updatedAt)){
+      syncPending=false;
+      setTimeout(()=>syncToCloud(false),0);
+    }
+  }
+  return success;
 }
 async function loadFromCloud(){
   if(!cloud || !currentUser) return;
-  try{
-    const {data,error}=await cloud.from("albums").select("data").eq("user_id",currentUser.id).maybeSingle();
-    if(error) throw error;
-    if(data?.data){
-      db=mergeAlbumData(db,data.data);
-      localStorage.setItem("albumCopaPremiumExternal",JSON.stringify(db));
-      stats();renderCountries();renderDupes();renderAlbum();
-    }else if(hasLocalProgress()){
-      await syncToCloud(false);
+  const userId=currentUser.id;
+  if(loadedCloudUserId===userId) return;
+  if(cloudLoadPromise){
+    if(cloudLoadUserId===userId) return cloudLoadPromise;
+    try{await cloudLoadPromise;}catch{}
+    if(currentUser?.id!==userId) return;
+  }
+  const loadTask=(async()=>{
+    try{
+      const {data,error}=await cloud.from("albums").select("data,updated_at").eq("user_id",userId).maybeSingle();
+      if(error) throw error;
+      if(currentUser?.id!==userId) return;
+      if(data?.data){
+        const localUpdatedAt=albumTimestamp(db);
+        const cloudUpdatedAt=albumTimestamp(data.data) || albumTimestamp({updatedAt:data.updated_at});
+        if(localUpdatedAt>cloudUpdatedAt){
+          cloudReady=true;
+          if(!await syncToCloud(false)) return;
+        }else{
+          db={
+            stickers:data.data.stickers||{},
+            notes:data.data.notes||"",
+            updatedAt:new Date(cloudUpdatedAt||Date.now()).toISOString()
+          };
+          persistLocalAlbum();
+          stats();renderCountries();renderDupes();renderAlbum();
+        }
+      }else if(hasLocalProgress() || albumTimestamp(db)){
+        cloudReady=true;
+        if(!await syncToCloud(false)) return;
+      }
+      cloudReady=true;
+      loadedCloudUserId=userId;
+      updateAuthUI();
+    }catch(err){
+      console.error(err);
+      setCloudStatus("Não foi possível carregar a nuvem: "+cloudErrorMessage(err),false);
     }
-    cloudReady=true;
-    await syncToCloud(false);
-    updateAuthUI();
-  }catch(err){
-    console.error(err);
-    setCloudStatus("Não foi possível carregar a nuvem: "+cloudErrorMessage(err),false);
+  })();
+  cloudLoadPromise=loadTask;
+  cloudLoadUserId=userId;
+  try{return await loadTask;}finally{
+    if(cloudLoadPromise===loadTask){cloudLoadPromise=null;cloudLoadUserId=null;}
   }
 }
 async function syncNow(){
