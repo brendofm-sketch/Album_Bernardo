@@ -9,7 +9,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Álbum Copa 2026 - Premium com Imagens Externas</title>
-<meta name="app-build" content="apk-mobile-download-v32">
+<meta name="app-build" content="whatsapp-faltantes-v36">
 <style>
 :root{
   --nav:#061829;--nav2:#0b2a4a;--blue:#075bd8;--green:#16a34a;--red:#df2336;--yellow:#ffd32a;
@@ -231,6 +231,8 @@ button,.filebtn{border:0;border-radius:13px;padding:11px 14px;font-weight:800;cu
   <div class="control-actions">
     <button id="controlAllBtn" class="gray" onclick="setControlMode('all')">📋 Geral</button>
     <button id="controlMissingBtn" class="yellow" onclick="setControlMode('missing')">🔎 Só faltantes</button>
+    <button class="green" onclick="copyMissingWhatsApp()">💬 Copiar WhatsApp</button>
+    <button onclick="openMissingWhatsApp()">📲 Abrir WhatsApp</button>
     <button onclick="exportControlList()">📄 Exportar controle</button>
     <button onclick="exportMissing()">🔎 Exportar faltantes</button>
     <button class="red" onclick="clearCurrentTeam()">🧹 Apagar país atual</button>
@@ -583,6 +585,77 @@ function clearCurrentTeamDuplicates(){
   toast(`Repetidas de ${t.name} retiradas.`);
 }
 function completeReward(){const ok=team(current).slots.every(s=>owned(current,s.n)); toast(ok?"Grupo completo!":"Ainda faltam figurinhas.");}
+const PUBLIC_APP_URL = "https://brendofm-sketch.github.io/Album_Bernardo/album_copa_2026_premium_imagens_externas.html";
+function collectorName(){
+  return profileSettings.username || profileSettings.displayName || currentUser?.user_metadata?.username || currentUser?.email?.split("@")[0] || "Cromo26";
+}
+function shareFlag(t){
+  if(t.code==="FWC") return "🏟️";
+  if(t.code==="CC") return "🥤";
+  if(t.code==="EXT") return "⭐";
+  return t.flag || "";
+}
+function shareGroupName(t){
+  if(t.code==="FWC") return "FWC";
+  if(t.code==="CC") return "CC";
+  if(t.code==="EXT") return "Extras";
+  if(t.code==="BIH") return "Bósnia";
+  if(t.code==="COD") return "Congo DR";
+  return t.name;
+}
+function shareStickerValue(t,s){
+  if(t.code==="EXT") return s.name;
+  return String(s.n).padStart(2,"0");
+}
+function missingByGroup(){
+  return GROUPS.map(t=>({
+    team:t,
+    missing:t.slots.filter(s=>!owned(t.code,s.n))
+  })).filter(item=>item.missing.length);
+}
+function buildMissingWhatsAppMessage(){
+  const total=GROUPS.reduce((sum,t)=>sum+t.slots.length,0);
+  const unique=GROUPS.reduce((sum,t)=>sum+t.slots.filter(s=>owned(t.code,s.n)).length,0);
+  const repeated=GROUPS.reduce((sum,t)=>sum+t.slots.reduce((acc,s)=>acc+Math.max(0,get(t.code,s.n).qty-1),0),0);
+  const missing=total-unique;
+  const pct=total?((unique/total)*100).toFixed(1):"0.0";
+  const lines=[
+    `📘 Inventário Cromo26 de Colecionador ${collectorName()}`,
+    "🧭 Recorte: Faltantes",
+    `✅ Progresso do álbum: ${pct}%`,
+    `🎯 Figurinhas únicas: ${unique}`,
+    `🔁 Repetidas: ${repeated}`,
+    `🧩 Faltantes: ${missing}`,
+    "",
+    "FALTANTES",
+    "---------------------"
+  ];
+  const groups=missingByGroup();
+  if(groups.length){
+    groups.forEach(({team: t, missing: miss})=>{
+      const values=miss.map(s=>shareStickerValue(t,s)).join(", ");
+      lines.push(`${t.code} ${shareFlag(t)} ${shareGroupName(t)}: ${values}`);
+    });
+  }else{
+    lines.push("Álbum completo! ✅");
+  }
+  lines.push("", "", "Vem para o App Álbum Digital", `Link: ${PUBLIC_APP_URL}`);
+  return lines.join("\n");
+}
+async function copyMissingWhatsApp(){
+  const message=buildMissingWhatsAppMessage();
+  try{
+    await navigator.clipboard?.writeText(message);
+    toast("Mensagem para WhatsApp copiada.");
+  }catch{
+    download("mensagem_whatsapp_faltantes_album_copa_2026.txt",message);
+    toast("Mensagem salva em TXT.");
+  }
+}
+function openMissingWhatsApp(){
+  const message=buildMissingWhatsAppMessage();
+  window.open(`https://wa.me/?text=${encodeURIComponent(message)}`,"_blank");
+}
 function exportMissing(){
   let lines=[]; GROUPS.forEach(t=>{let miss=t.slots.filter(s=>!owned(t.code,s.n)).map(s=>`${String(s.n).padStart(2,"0")}-${s.name}`); if(miss.length)lines.push(`${t.flag} ${t.name} (${t.code}): ${miss.join(", ")}`)});
   download("faltantes_album_copa_2026.txt",lines.join("\n"));
