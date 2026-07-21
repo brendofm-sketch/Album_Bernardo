@@ -1,17 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=./album_copa_2026_premium_imagens_externas.html">
-  <title>Álbum Copa 2026</title>
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="apple-touch-icon" href="./icon-192.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#061928">
+  <meta name="description" content="Início do Álbum da Copa do Mundo 2026.">
+  <title>Álbum da Copa do Mundo</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="css/home.css?v=9">
+  <link rel="stylesheet" href="css/home-transition.css?v=9">
 </head>
 <body>
-  <p>Carregando álbum...</p>
-  <script>
-    location.replace("./album_copa_2026_premium_imagens_externas.html");
-  </script>
+  <main class="home" aria-label="Início do aplicativo">
+    <video class="home-video" autoplay muted loop playsinline poster="assets/hub/album_copa_capa.png" aria-hidden="true">
+      <source src="assets/videos/home_background.mp4" type="video/mp4">
+    </video>
+    <div class="home-shade" aria-hidden="true"></div>
+    <div class="home-lights" aria-hidden="true"></div>
+
+    <header class="home-title">
+      <span class="trophy" aria-hidden="true">🏆</span>
+      <div>
+        <span class="eyebrow">MINHA COLEÇÃO 2026</span>
+        <h1>Álbum da Copa do Mundo</h1>
+      </div>
+    </header>
+
+    <section class="hub" aria-label="Menu principal">
+      <button class="hub-card side-card trade-card" type="button" aria-label="Trocas">
+        <span class="card-label">TROCAS</span>
+        <span class="trade-visual" aria-hidden="true">
+          <img src="figurinhas/CC_01.webp" alt="">
+          <b>⇄</b>
+        </span>
+      </button>
+
+      <a class="hub-card album-card" href="album_copa_2026_premium_imagens_externas.html" aria-label="Abrir Álbum">
+        <span class="card-label">ÁLBUM</span>
+        <span class="album-book">
+          <img src="assets/hub/album_copa_capa.png" alt="Capa do Álbum da Copa 2026">
+          <span class="open-badge">ABRIR</span>
+        </span>
+      </a>
+
+      <button class="hub-card side-card friends-card" type="button" aria-label="Amigos">
+        <span class="card-label">AMIGOS</span>
+        <span class="friends-visual" aria-hidden="true">
+          <img src="assets/hub/icone_amigos.png" alt="">
+        </span>
+      </button>
+    </section>
+
+    <div>
+      <div class="hub-dots" aria-hidden="true"><i></i><i class="active"></i><i></i></div>
+      <p class="home-hint">Clique no álbum para abrir sua coleção</p>
+    </div>
+
+    <output id="homeNotice" class="home-notice" aria-live="polite"></output>
+    <footer class="home-footer">
+      <span>⚽ COPA 2026</span>
+      <span class="live-status"><i></i> ÁLBUM ONLINE</span>
+    </footer>
+  </main>
+  <script src="js/home.js?v=9"></script>
 </body>
 </html>

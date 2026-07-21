@@ -1,11 +1,21 @@
-const CACHE_NAME = "album-copa-2026-tablet-v36-whatsapp-faltantes";
+const CACHE_NAME = "album-copa-2026-tablet-v37-home-animada";
 const CORE_ASSETS = [
   "./",
   "./index.html",
   "./album_copa_2026_premium_imagens_externas.html",
   "./manifest.webmanifest",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./css/home.css",
+  "./css/home-transition.css",
+  "./css/animations.css",
+  "./css/arrival.css",
+  "./js/home.js",
+  "./js/dynamic-ui.js",
+  "./assets/hub/album_aberto.png",
+  "./assets/hub/album_copa_capa.png",
+  "./assets/hub/icone_amigos.png",
+  "./assets/videos/home_background.mp4"
 ];
 
 self.addEventListener("install", event => {
